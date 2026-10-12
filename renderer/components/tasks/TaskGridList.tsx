@@ -111,7 +111,7 @@ function Cover({ file }: { file: any }) {
     >
       {showVideo && inView ? (
         <video
-          src={`media://${encodeURIComponent(filePath)}`}
+          src={`${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub/media?path=' : 'media://'}${encodeURIComponent(filePath)}`}
           muted
           playsInline
           preload="metadata"

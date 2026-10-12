@@ -1,3 +1,4 @@
+import { routerProviderHeaders } from '../../vos/router';
 import fs from 'fs';
 import OpenAI from 'openai';
 import type { AsrProvider } from '../../../types/asrProvider';
@@ -52,6 +53,7 @@ export async function transcribeWithOpenAiCompatible(
     apiKey,
     timeout: timeoutMs,
     maxRetries,
+    ...(provider.vosManaged ? { defaultHeaders: routerProviderHeaders(provider) } : {}),
   });
 
   const callTranscription = async (

@@ -311,7 +311,7 @@ export function getTtsModelRequest(
   id: TtsModelId,
   numThreads?: number,
 ): TtsModelRequest {
-  return TTS_MODELS[id].buildModelRequest(getTtsModelDir(id), numThreads);
+  return { ...TTS_MODELS[id].buildModelRequest(getTtsModelDir(id), numThreads), provider: process.env.VSUB_SHERPA_PROVIDER || 'cpu' };
 }
 
 /** voiceId → sherpa sid（未知 voice 回落模型默认音色）。纯查表。 */

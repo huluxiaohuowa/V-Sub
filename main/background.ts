@@ -1,6 +1,7 @@
 // 必须是第一个 import：放大 libuv 线程池（首个异步 I/O 后定型，不可再改）
 import './helpers/uvThreadPool';
 import { backgroundOnly } from './automation/bootstrap';
+import { installWebDialogs, startWebServer } from './vos/server';
 import { createWindowPort } from './automation/events';
 import { startAutomationServer } from './automation/server';
 import { AutomationService } from './automation/service';
@@ -168,6 +169,7 @@ app.on('before-quit', (event) => {
 
 (async () => {
   await app.whenReady();
+  if (process.env.VSUB_WEB) installWebDialogs();
 
   // CUDA reads CUDA_VISIBLE_DEVICES when its runtime first initializes. Apply
   // the persisted selection before any addon/utility/Python engine can start.
@@ -319,7 +321,8 @@ app.on('before-quit', (event) => {
   const automationService = new AutomationService();
   setupAssistantHandlers(automationService);
   setupMcpConfigHandlers();
-  await startAutomationServer(automationService);
+  if (process.env.VSUB_WEB) await startWebServer();
+  else await startAutomationServer(automationService);
   if (desktopRequested) await showDesktop();
   app.on('activate', () => {
     desktopRequested = true;

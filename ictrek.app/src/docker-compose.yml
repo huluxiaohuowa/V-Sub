@@ -1,0 +1,73 @@
+x-vsub-env: &vsub-env
+  APP_VERSION: "__APP_VERSION__"
+  VSUB_DATA_DIR: /data
+  V_ROUTER_URL: ${V_ROUTER_URL:-http://v-router:8080}
+  VOS_OIDC_USERINFO_URL: ${VOS_OIDC_USERINFO_URL:-http://host.docker.internal:8105/v1000/oauth2/userinfo}
+  VSUB_MAX_UPLOAD_BYTES: ${VSUB_MAX_UPLOAD_BYTES:-4294967296}
+
+x-vsub: &vsub
+  restart: unless-stopped
+  pull_policy: always
+  environment: *vsub-env
+  volumes:
+    - ${VOS_APP_STORAGE_PATH}/data:/data
+  extra_hosts: ["host.docker.internal:host-gateway"]
+  ports: ["22703:7090"]
+  networks:
+    vos_default:
+      aliases: [v-sub-backend]
+  labels:
+    - "traefik.enable=true"
+    - 'traefik.http.routers.v-sub-top-open.rule=(Path(`/app/com.ictrek.v-sub`) || Path(`/app/com.ictrek.v-sub/`)) && HeadersRegexp(`Sec-Fetch-Dest`, `document`)'
+    - "traefik.http.routers.v-sub-top-open.priority=200"
+    - "traefik.http.routers.v-sub-top-open.service=v-sub-app"
+    - "traefik.http.routers.v-sub-top-open.middlewares=v-sub-top-open-redirect"
+    - 'traefik.http.middlewares.v-sub-top-open-redirect.redirectregex.regex=^(https?://[^/]+)/app/com\.ictrek\.v-sub/?(?:\?.*)?$$'
+    - 'traefik.http.middlewares.v-sub-top-open-redirect.redirectregex.replacement=$${1}/#/app/app-drawer/com.ictrek.v-sub/v-sub'
+    - "traefik.http.middlewares.v-sub-top-open-redirect.redirectregex.permanent=false"
+    - "traefik.docker.network=vos_default"
+    - "traefik.http.routers.v-sub-app.rule=PathPrefix(`/app/com.ictrek.v-sub`)"
+    - "traefik.http.routers.v-sub-app.middlewares=v-sub-strip"
+    - "traefik.http.middlewares.v-sub-strip.stripprefix.prefixes=/app/com.ictrek.v-sub"
+    - "traefik.http.services.v-sub-app.loadbalancer.server.port=7090"
+  healthcheck:
+    test: ["CMD", "curl", "-fsS", "http://127.0.0.1:7090/health"]
+    interval: 30s
+    timeout: 10s
+    start_period: 20s
+    retries: 3
+x-vsub-gpu: &vsub-gpu
+  <<: *vsub
+  runtime: nvidia
+  environment:
+    <<: *vsub-env
+    NVIDIA_VISIBLE_DEVICES: ${NVIDIA_VISIBLE_DEVICES:-all}
+    NVIDIA_DRIVER_CAPABILITIES: ${NVIDIA_DRIVER_CAPABILITIES:-compute,utility}
+
+services:
+  v-sub-amd:
+    <<: *vsub
+    profiles: [amd]
+    image: ${VSUB_AMD_IMAGE}
+  v-sub-amd-cuda:
+    <<: *vsub-gpu
+    profiles: [amd-cuda]
+    image: ${VSUB_AMD_CUDA_IMAGE}
+  v-sub-arm:
+    <<: *vsub
+    profiles: [arm]
+    image: ${VSUB_ARM_IMAGE}
+  v-sub-arm-cuda:
+    <<: *vsub-gpu
+    profiles: [arm-cuda]
+    image: ${VSUB_ARM_CUDA_IMAGE}
+  v-sub-l4t:
+    <<: *vsub-gpu
+    profiles: [l4t]
+    image: ${VSUB_L4T_IMAGE}
+  v-sub-thor:
+    <<: *vsub-gpu
+    profiles: [thor]
+    image: ${VSUB_THOR_IMAGE}
+networks:
+  vos_default: {external: true}

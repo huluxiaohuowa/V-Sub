@@ -1,3 +1,4 @@
+import { routerProviderHeaders } from '../../vos/router';
 import fs from 'fs';
 import path from 'path';
 import type {
@@ -90,7 +91,7 @@ export async function synthesizeWithOpenAiCompatible(
   const res = await fetch(`${base}/audio/speech`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${apiKey}`,
+      Authorization: provider.vosManaged ? routerProviderHeaders(provider).Authorization : `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -99,6 +100,7 @@ export async function synthesizeWithOpenAiCompatible(
       voice: request.voice,
       speed: clampOpenAiSpeed(request.speed),
       response_format: 'wav',
+      ...(request.language ? { language: request.language } : {}),
     }),
     signal: AbortSignal.any(signals),
   });

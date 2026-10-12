@@ -1,3 +1,4 @@
+import { setLanguageMode } from '../../vos';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
@@ -98,6 +99,7 @@ function FlowNode({
 /** 引导内的语言切换项（语言名用本地写法，方便不识别当前界面语言的新用户辨认）。 */
 const ONBOARDING_LANGS = [
   { value: 'zh', label: '中文' },
+  ...(process.env.NEXT_PUBLIC_VSUB_WEB ? [{ value: 'zh-TW', label: '繁體中文' }] : []),
   { value: 'en', label: 'English' },
 ];
 
@@ -110,7 +112,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
   const { t, i18n } = useTranslation('common');
   const router = useRouter();
   const { locale } = router.query;
-  const currentLang = (i18n.language || '').toLowerCase().startsWith('zh')
+  const currentLang = process.env.NEXT_PUBLIC_VSUB_WEB && i18n.language === 'zh-TW' ? 'zh-TW' : (i18n.language || '').toLowerCase().startsWith('zh')
     ? 'zh'
     : 'en';
 
@@ -121,6 +123,10 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
    */
   const switchLanguage = async (value: string) => {
     if (value === currentLang) return;
+    if (process.env.NEXT_PUBLIC_VSUB_WEB) {
+      setLanguageMode(value === 'en' ? 'en-US' : value === 'zh-TW' ? 'zh-TW' : 'zh-CN');
+      return;
+    }
     try {
       await window?.ipc?.invoke('setSettings', { language: value });
     } catch (error) {

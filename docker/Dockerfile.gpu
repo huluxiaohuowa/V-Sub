@@ -1,0 +1,49 @@
+ARG WORKBENCH_IMAGE
+ARG GPU_BASE_IMAGE
+FROM ${WORKBENCH_IMAGE} AS web
+FROM ${GPU_BASE_IMAGE} AS native
+ARG PROFILE
+WORKDIR /build
+RUN apt-get update && apt-get install -y --no-install-recommends g++ cmake && rm -rf /var/lib/apt/lists/*
+COPY --from=web /usr/local/bin/node /usr/local/bin/node
+COPY --from=web /usr/local/include/node /usr/local/include/node
+COPY --from=sherpa_source /scripts/node-addon-api ./node-addon
+COPY --from=sherpa_source /sherpa-onnx/c-api ./install/include/sherpa-onnx/c-api
+COPY --from=web /opt/v-sub/node_modules/node-addon-api ./node-addon/node_modules/node-addon-api
+ENV SHERPA_ONNX_INSTALL_DIR=/build/install
+RUN python3 - <<'PY'
+import os, pathlib, shutil, sysconfig, sherpa_onnx
+assert sherpa_onnx.__version__.startswith('1.13.8+cuda'), sherpa_onnx.__version__
+profile = os.environ.get('PROFILE')
+expected = {'l4t': ('cuda12', 'onnxruntime1.18.1'), 'amd-cuda': ('cuda12', 'onnxruntime1.28.2'), 'arm-cuda': ('cuda13', 'onnxruntime1.27.0'), 'thor': ('cuda13', 'onnxruntime1.27.0')}[profile]
+assert all(value in sherpa_onnx.__version__ for value in expected), sherpa_onnx.__version__
+source = pathlib.Path(sysconfig.get_paths()['purelib']) / 'sherpa_onnx/lib'
+target = pathlib.Path('/build/install/lib')
+target.mkdir(parents=True)
+for file in source.glob('lib*.so*'):
+    if file.is_file(): shutil.copy2(file, target/file.name, follow_symlinks=True)
+ort = next(target.glob('libonnxruntime.so.*.*.*'))
+for name in ['libonnxruntime.so', 'libonnxruntime.so.1']:
+    (target/name).unlink(missing_ok=True)
+    (target/name).symlink_to(ort.name)
+print('Using verified GPU wheel', sherpa_onnx.__version__)
+PY
+RUN cmake -S node-addon -B node-addon/build -DCMAKE_JS_INC=/usr/local/include/node -DCMAKE_BUILD_TYPE=Release \
+ && cmake --build node-addon/build -j 4
+
+FROM ${GPU_BASE_IMAGE} AS runtime
+ARG PROFILE
+WORKDIR /opt/v-sub
+RUN apt-get update && sound=libasound2 && if apt-cache show libasound2t64 >/dev/null 2>&1; then sound=libasound2t64; fi && apt-get install -y --no-install-recommends xvfb xauth libnss3 libatk-bridge2.0-0 libgtk-3-0 libgbm1 "$sound" libxss1 fonts-noto-cjk tini && rm -rf /var/lib/apt/lists/*
+COPY --from=web /usr/local/bin/node /usr/local/bin/node
+COPY --from=web /opt/v-sub/ ./
+RUN node -e "require('fs').rmSync('extraResources/sherpa/native/linux-'+process.arch, {recursive:true,force:true})"
+COPY --from=native /build/install/lib/ /tmp/gpu-native/
+COPY --from=native /build/node-addon/build/sherpa-onnx.node /tmp/gpu-native/sherpa-onnx.node
+RUN node -e "require('fs').cpSync('/tmp/gpu-native', 'extraResources/sherpa/native/linux-'+process.arch, {recursive:true}); require('fs').rmSync('/tmp/gpu-native', {recursive:true})" \
+ && python3 -c "import sherpa_onnx; assert '+cuda' in sherpa_onnx.__version__"
+ENV NODE_ENV=production PORT=7090 VSUB_APP_ROOT=/opt/v-sub VSUB_DATA_DIR=/data \
+    VSUB_SHERPA_PROVIDER=cuda VSUB_SHERPA_VERSION=1.13.8 VSUB_PROFILE=${PROFILE}
+EXPOSE 7090
+ENTRYPOINT ["tini", "--"]
+CMD ["xvfb-run", "-a", "-s", "-screen 0 1280x900x24 -ac", "node", "vos/gateway.mjs"]

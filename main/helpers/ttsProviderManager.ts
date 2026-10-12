@@ -1,3 +1,4 @@
+import { getRouterTts, managed } from '../vos/router';
 import type { TtsProvider } from '../../types/ttsProvider';
 import { store } from './store';
 import { assertProviderList } from '../../types/providerPersistence';
@@ -10,12 +11,12 @@ export function getTtsProviders(): TtsProvider[] {
   const stored = store.get('ttsProviders');
   const providers = stored === undefined ? [] : stored;
   assertProviderList(providers);
-  return providers;
+  return process.env.VSUB_WEB ? [...providers.filter(p => !managed(p)), ...getRouterTts()] : providers;
 }
 
 export function setTtsProviders(providers: TtsProvider[]): void {
   assertProviderList(providers);
-  store.set('ttsProviders', providers);
+  store.set('ttsProviders', providers.filter(p => !managed(p)));
 }
 
 export function getTtsProviderById(

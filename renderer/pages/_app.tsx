@@ -1,3 +1,5 @@
+import dynamic from 'next/dynamic';
+const VosControls = dynamic(() => import('../vos/VosControls').then(module => module.VosControls), { ssr: false });
 import React from 'react';
 import type { AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
@@ -19,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <NavigationGuardProvider>
           <AssistantProvider>
+            {process.env.NEXT_PUBLIC_VSUB_WEB && <VosControls />}
             <Layout {...pageProps}>
               <Component {...pageProps} />
               <UpdateNotification />

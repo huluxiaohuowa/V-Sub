@@ -77,7 +77,7 @@ function buildUrls(asset, preferred) {
     ghproxy: ['ghproxy', 'github', 'gitcode'],
     gitcode: ['gitcode', 'ghproxy', 'github'],
   }[preferred] || ['github', 'ghproxy', 'gitcode'];
-  return order.map((s) => assetUrl(s, asset));
+  return process.env.VSUB_WEB ? [`https://ghfast.top/${assetUrl('github', asset)}`, ...order.map((s) => assetUrl(s, asset))] : order.map((s) => assetUrl(s, asset));
 }
 
 /** host 平台/架构 -> 需要下载并落地的产物列表（与 release.yml 矩阵一致）。 */

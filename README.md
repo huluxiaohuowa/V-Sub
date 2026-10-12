@@ -1,3 +1,7 @@
+# V-Sub
+
+VOS adaptation of SmartSub: browser subtitle and dubbing workbench, account-isolated storage, automatic V-Router ASR/TTS access and private registration of installed local models. See [VOS delivery](ictrek.app/README.md). Upstream desktop functionality remains available.
+
 <div align="center">
 
 <img src="./resources/icon.png" width="88" alt="SmartSub" />

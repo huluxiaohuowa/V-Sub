@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const config = require('../nextron.config.js').webpack({
-  mode: 'development',
+  mode: process.env.VSUB_WEB ? 'production' : 'development',
   target: 'electron-main',
   entry: { background: './main/background.ts', preload: './main/preload.ts' },
   output: {
@@ -25,7 +25,7 @@ const config = require('../nextron.config.js').webpack({
   resolve: { extensions: ['.ts', '.tsx', '.js', '.json'] },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
+      'process.env.NODE_ENV': JSON.stringify(process.env.VSUB_WEB ? 'production' : 'development'),
     }),
   ],
   node: { __dirname: false, __filename: false },

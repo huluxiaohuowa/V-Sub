@@ -1,3 +1,4 @@
+import { sherpaProvider } from '../../vos/provider';
 import { getNumericSetting } from './transcribeShared';
 
 /** funasr/SenseVoice 专属参数映射：SmartSub 统一 settings → sherpa-onnx addon 参数。 */
@@ -46,7 +47,7 @@ export function buildFunasrParams(
   return {
     language: getFunasrLanguage(sourceLanguage), // 'auto' → 引擎侧归一为 '' 自动
     use_itn: s.funasrUseItn !== false, // 默认开 ITN
-    provider: s.funasrProvider || 'cpu',
+    provider: sherpaProvider(s.funasrProvider),
     num_threads:
       Number(s.funasrNumThreads) > 0 ? Number(s.funasrNumThreads) : 2,
     // VAD 调参复用 SmartSub 统一开关（与 faster-whisper 一致；缺省也安全）。

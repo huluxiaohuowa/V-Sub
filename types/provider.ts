@@ -400,7 +400,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'mt',
     icon: '🔤',
-    iconImg: '/images/providers/baidu-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/baidu-color.svg`,
     fields: [
       {
         key: 'apiKey',
@@ -427,7 +427,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'free',
     icon: '🆓',
-    iconImg: '/images/providers/free-auto.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/free-auto.svg`,
     fields: [
       {
         key: 'fallbackChain',
@@ -459,7 +459,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'free',
     icon: '🅱️',
-    iconImg: '/images/providers/bing-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/bing-color.svg`,
     fields: [
       {
         key: 'windowMaxRequests',
@@ -483,7 +483,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'free',
     icon: '🔎',
-    iconImg: '/images/providers/googletranslate.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/googletranslate.svg`,
     fields: [
       {
         key: 'windowMaxRequests',
@@ -507,7 +507,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'free',
     icon: '🇬',
-    iconImg: '/images/providers/googletranslate.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/googletranslate.svg`,
     fields: [
       {
         key: 'apiKey',
@@ -527,7 +527,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'mt',
     icon: '☁️',
-    iconImg: '/images/providers/alibabacloud.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/alibabacloud.svg`,
     fields: [
       {
         key: 'apiKey',
@@ -563,7 +563,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'mt',
     icon: '🌋',
-    iconImg: '/images/providers/volcengine-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/volcengine-color.svg`,
     fields: [
       {
         key: 'apiKey',
@@ -590,7 +590,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'mt',
     icon: '🫛',
-    iconImg: '/images/providers/doubao-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/doubao-color.svg`,
     fields: [
       {
         key: 'apiKey',
@@ -619,7 +619,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'mt',
     icon: '🐮',
-    iconImg: '/images/providers/niutrans.png',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/niutrans.png`,
     fields: [
       {
         key: 'apiKey',
@@ -639,7 +639,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'mt',
     icon: '🐧',
-    iconImg: '/images/providers/tencentcloud-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/tencentcloud-color.svg`,
     fields: [
       {
         key: 'apiKey',
@@ -675,7 +675,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'mt',
     icon: '🗣️',
-    iconImg: '/images/providers/spark-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/spark-color.svg`,
     fields: [
       {
         key: 'appId',
@@ -709,7 +709,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'free',
     icon: '🌐',
-    iconImg: '/images/providers/deepl-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/deepl-color.svg`,
     fields: [
       {
         key: 'apiUrl',
@@ -738,7 +738,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'mt',
     icon: '☁️',
-    iconImg: '/images/providers/azure-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/azure-color.svg`,
     fields: [
       {
         key: 'apiKey',
@@ -765,7 +765,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: true,
     group: 'free',
     icon: '🤖',
-    iconImg: '/images/providers/ollama.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/ollama.svg`,
     fields: [
       {
         key: 'apiUrl',
@@ -800,7 +800,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: true,
     group: 'ai',
     icon: '🧠',
-    iconImg: '/images/providers/deepseek-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/deepseek-color.svg`,
     fields: [
       {
         key: 'apiUrl',
@@ -837,7 +837,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: true,
     group: 'ai',
     icon: '☁️',
-    iconImg: '/images/providers/azureai-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/azureai-color.svg`,
     fields: [
       {
         key: 'apiUrl',
@@ -866,7 +866,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: true,
     group: 'ai',
     icon: '🐺',
-    iconImg: '/images/deerapi.png',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/deerapi.png`,
     fields: [
       {
         key: 'apiUrl',
@@ -903,7 +903,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: true,
     group: 'ai',
     icon: '🌀',
-    iconImg: '/images/providers/gemini-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/gemini-color.svg`,
     fields: [
       {
         key: 'apiUrl',
@@ -945,7 +945,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: true,
     group: 'ai',
     icon: '🔮',
-    iconImg: '/images/providers/siliconcloud-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/siliconcloud-color.svg`,
     fields: [
       {
         key: 'apiUrl',
@@ -982,7 +982,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: false,
     group: 'mt',
     icon: '🐋',
-    iconImg: '/images/providers/qwen-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/qwen-color.svg`,
     fields: [
       {
         key: 'apiUrl',
@@ -1025,7 +1025,7 @@ export const PROVIDER_TYPES: ProviderType[] = [
     isAi: true,
     group: 'ai',
     icon: '🐋',
-    iconImg: '/images/providers/qwen-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/qwen-color.svg`,
     fields: [
       {
         key: 'apiUrl',

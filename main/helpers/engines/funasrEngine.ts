@@ -1,3 +1,4 @@
+import { sherpaProvider } from '../../vos/provider';
 import fs from 'fs';
 import path from 'path';
 import type { EngineStatus } from '../../../types/engine';
@@ -45,7 +46,7 @@ function buildModelRequest(
     tokens: path.join(asrDir, 'tokens.txt'),
     vadModel: getFunasrVadModelPath(),
     modelType: selection.modelType,
-    params: buildFunasrParams(settings, sourceLanguage),
+    params: { ...buildFunasrParams(settings, sourceLanguage), provider: sherpaProvider(settings.funasrProvider as string | undefined, selection.modelType) },
   };
 }
 

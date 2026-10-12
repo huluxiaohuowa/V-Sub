@@ -179,7 +179,7 @@ function ToolCard({
         <div className="border-t p-2.5">
           <div className="overflow-hidden rounded-lg border bg-black/5 dark:bg-white/5">
             <img
-              src={`media://${encodeURIComponent((tool.result as any).screenshot.imagePath)}`}
+              src={`${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub/media?path=' : 'media://'}${encodeURIComponent((tool.result as any).screenshot.imagePath)}`}
               alt={t('assistant.screenshotPreview')}
               className="max-h-48 w-full cursor-pointer object-contain transition-opacity hover:opacity-90"
               onClick={() =>

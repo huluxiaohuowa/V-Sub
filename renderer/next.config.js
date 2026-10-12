@@ -4,6 +4,7 @@ const webpack = require('webpack');
 
 module.exports = {
   trailingSlash: true,
+  ...(process.env.VSUB_WEB ? { basePath: '/app/com.ictrek.v-sub', assetPrefix: '/app/com.ictrek.v-sub' } : {}),
   images: {
     unoptimized: true,
   },

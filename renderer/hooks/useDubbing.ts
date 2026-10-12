@@ -57,7 +57,7 @@ export type { DubbingEngineOption } from './useTtsEngineOptions';
  * （media 协议 handler 取路径前会剥离查询串）。
  */
 function mediaUrl(p: string): string {
-  return `media://${encodeURIComponent(p)}?v=${Date.now()}`;
+  return `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub/media?path=' : 'media://'}${encodeURIComponent(p)}${process.env.NEXT_PUBLIC_VSUB_WEB ? '&' : '?'}v=${Date.now()}`;
 }
 
 export type DubbingUiPhase =

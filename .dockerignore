@@ -1,0 +1,10 @@
+.git
+.github
+node_modules
+app
+renderer/.next
+renderer/public/locales/zh-TW
+ictrek.app/dist
+docs
+.env*
+*.log

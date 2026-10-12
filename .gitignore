@@ -27,3 +27,9 @@ extraResources/sherpa/native/
 
 # Local Python speech review test caches
 __pycache__/
+
+# VOS generated resources
+renderer/public/locales/zh-TW/
+ictrek.app/dist/
+
+__pycache__/

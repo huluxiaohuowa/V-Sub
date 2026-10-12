@@ -1,3 +1,4 @@
+import { sherpaProvider } from '../../vos/provider';
 import { getNumericSetting } from './transcribeShared';
 
 /**
@@ -57,7 +58,7 @@ export function buildFireRedParams(
   const s = settings as FireRedEngineSettings;
   return {
     // 本期仅 cpu 落地（design D6）；非法/未设回退 cpu。
-    provider: s.fireRedProvider === 'cuda' ? 'cuda' : 'cpu',
+    provider: sherpaProvider(s.fireRedProvider as string | undefined),
     num_threads:
       Number(s.fireRedNumThreads) > 0 ? Number(s.fireRedNumThreads) : 2,
     // VAD 调参复用 SmartSub 统一开关（与 funasr / qwen / faster-whisper 一致）。

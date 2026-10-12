@@ -1,3 +1,4 @@
+import { routerProviderHeaders } from '../../vos/router';
 import { randomUUID } from 'crypto';
 import {
   ASR_ALIYUN,
@@ -237,7 +238,7 @@ export async function testAsrConnection(
     if (!apiUrl) return { ok: false, needsConfig: true };
     const base = normalizeBaseURL(apiUrl);
     const res = await fetch(`${base}/models`, {
-      headers: { Authorization: `Bearer ${apiKey}` },
+      headers: provider.vosManaged ? routerProviderHeaders(provider) : { Authorization: `Bearer ${apiKey}` },
       signal: timeoutSignal(),
     });
     if (res.ok) return { ok: true };

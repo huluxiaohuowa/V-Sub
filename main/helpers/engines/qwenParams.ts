@@ -1,3 +1,4 @@
+import { sherpaProvider } from '../../vos/provider';
 import { getNumericSetting } from './transcribeShared';
 
 /**
@@ -48,7 +49,7 @@ export function buildQwenParams(
   const s = settings as QwenEngineSettings;
   return {
     // P2 仅 cpu 落地（design D7）；非法/未设回退 cpu。
-    provider: s.qwenProvider === 'cuda' ? 'cuda' : 'cpu',
+    provider: sherpaProvider(s.qwenProvider as string | undefined),
     num_threads: Number(s.qwenNumThreads) > 0 ? Number(s.qwenNumThreads) : 2,
     max_total_len: getNumericSetting(s.qwenMaxTotalLen, 512),
     max_new_tokens: getNumericSetting(s.qwenMaxNewTokens, 128),

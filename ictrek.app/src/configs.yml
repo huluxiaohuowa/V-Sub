@@ -1,0 +1,16 @@
+configs:
+  - name: V_ROUTER_URL
+    type: string
+    title: {zh-CN: V-Router 地址, en: V-Router URL}
+    description: {zh-CN: VOS 内统一模型网关，凭据通过账户授权取得。, en: Unified model gateway; credentials come from VOS account authorization.}
+    default: http://v-router:8080
+  - name: VOS_OIDC_USERINFO_URL
+    type: string
+    title: {zh-CN: VOS 身份校验地址, en: VOS userinfo URL}
+    description: {zh-CN: 用于校验 OIDC 令牌的 VOS 后端地址。, en: VOS backend URL for OIDC token verification.}
+    default: http://host.docker.internal:8105/v1000/oauth2/userinfo
+  - name: VSUB_MAX_UPLOAD_BYTES
+    type: integer
+    title: {zh-CN: 单文件上传上限, en: Maximum upload size}
+    description: {zh-CN: 单文件上传字节数上限。, en: Maximum number of bytes per uploaded file.}
+    default: 4294967296

@@ -183,7 +183,7 @@ export const TTS_PROVIDER_TYPES: TtsProviderType[] = [
     name: 'Edge TTS',
     isBuiltin: true,
     icon: '🌐',
-    iconImg: '/images/providers/microsoft-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/microsoft-color.svg`,
     // 逆向接口：免费无 key，但随时可能断供（2025-12 曾大规模断），UI 显著标注试用档。
     unstable: true,
     // 与 Azure 同一 Neural 音色命名体系，共用微软语音库文档。
@@ -231,7 +231,7 @@ export const TTS_PROVIDER_TYPES: TtsProviderType[] = [
     shortName: 'Azure',
     isBuiltin: true,
     icon: '🔷',
-    iconImg: '/images/providers/azure-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/azure-color.svg`,
     // 品牌型硬单例：region + subscription key 凭据，可选 endpoint 覆盖主权云。
     voiceListMode: 'label', // voices/list 全量 700+，仅回填名称不替换清单
     docsUrl:
@@ -337,7 +337,7 @@ export const TTS_PROVIDER_TYPES: TtsProviderType[] = [
     shortName: '豆包语音',
     isBuiltin: true,
     icon: '🌋',
-    iconImg: '/images/providers/volcengine-color.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/volcengine-color.svg`,
     // 品牌型硬单例：新版「豆包语音」控制台单 API Key（与豆包听写 ASR 同 Key 体系）。
     // 音色列表 API 属控制台 OpenAPI（AK/SK 签名体系），与语音 API Key 不通 → 不做在线拉取。
     docsUrl: 'https://www.volcengine.com/docs/6561/1257544',
@@ -419,7 +419,7 @@ export const TTS_PROVIDER_TYPES: TtsProviderType[] = [
     name: 'ElevenLabs',
     isBuiltin: true,
     icon: '🎙️',
-    iconImg: '/images/providers/elevenlabs.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/elevenlabs.svg`,
     // 品牌型硬单例：xi-api-key 凭据；国内需网络代理直连。
     voiceListMode: 'replace', // GET /v1/voices 账号音色少，整体替换 + 名称映射
     docsUrl: 'https://elevenlabs.io/app/voice-library',
@@ -493,7 +493,7 @@ export const TTS_PROVIDER_TYPES: TtsProviderType[] = [
     shortName: 'MiMo TTS',
     isBuiltin: true,
     icon: '🔊',
-    iconImg: '/images/providers/xiaomi-mimo.svg',
+    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/xiaomi-mimo.svg`,
     docsUrl:
       'https://mimo.mi.com/docs/zh-CN/quick-start/usage-guide/audio/speech-synthesis-v2.5',
     capabilities: {
@@ -604,7 +604,7 @@ export const TTS_PROVIDER_PRESETS: Record<string, TtsProviderPreset[]> = {
       id: 'openai',
       name: 'OpenAI',
       icon: '🤖',
-      iconImg: '/images/providers/openai.svg',
+      iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/openai.svg`,
       values: {
         apiUrl: 'https://api.openai.com/v1',
         model: 'tts-1',
@@ -615,7 +615,7 @@ export const TTS_PROVIDER_PRESETS: Record<string, TtsProviderPreset[]> = {
       id: 'siliconflow',
       name: 'SiliconFlow 硅基流动',
       icon: '🧊',
-      iconImg: '/images/providers/siliconcloud-color.svg',
+      iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/siliconcloud-color.svg`,
       values: {
         apiUrl: 'https://api.siliconflow.cn/v1',
         model: 'FunAudioLLM/CosyVoice2-0.5B',

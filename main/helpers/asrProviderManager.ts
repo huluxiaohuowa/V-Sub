@@ -1,3 +1,4 @@
+import { getRouterAsr, managed } from '../vos/router';
 import type { AsrProvider } from '../../types/asrProvider';
 import { store } from './store';
 import { assertProviderList } from '../../types/providerPersistence';
@@ -12,12 +13,12 @@ export function getAsrProviders(): AsrProvider[] {
   const stored = store.get('asrProviders');
   const providers = stored === undefined ? [] : stored;
   assertProviderList(providers);
-  return providers;
+  return process.env.VSUB_WEB ? [...providers.filter(p => !managed(p)), ...getRouterAsr()] : providers;
 }
 
 export function setAsrProviders(providers: AsrProvider[]): void {
   assertProviderList(providers);
-  store.set('asrProviders', providers);
+  store.set('asrProviders', providers.filter(p => !managed(p)));
 }
 
 export function getAsrProviderById(

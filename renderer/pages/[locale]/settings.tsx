@@ -246,6 +246,7 @@ const Settings = () => {
       if (oldBase && newBase && oldBase !== newBase)
         setStorageMoveDialog({ oldBase, newBase });
       if (
+        !process.env.NEXT_PUBLIC_VSUB_WEB &&
         typeof settings.language === 'string' &&
         settings.language !== i18n.language
       )
@@ -869,7 +870,7 @@ const Settings = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
+            {!process.env.NEXT_PUBLIC_VSUB_WEB && <div className="flex items-center justify-between">
               <span>{t('changeLanguage')}</span>
               <Select
                 onValueChange={handleLanguageChange}
@@ -883,7 +884,7 @@ const Settings = () => {
                   <SelectItem value="en">{t('english')}</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div>}
 
             <CustomLanguageManager
               languages={customLanguages}

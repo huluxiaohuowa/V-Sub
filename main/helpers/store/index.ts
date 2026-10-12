@@ -17,6 +17,10 @@ export const store = new Store<StoreType>({
       builtinWhisperCommand: defaultWhisperCommand,
       useCuda: true,
       gpuMode: 'auto' as const,
+      funasrProvider: process.env.VSUB_SHERPA_PROVIDER === 'cuda' ? 'cuda' : 'cpu',
+      qwenProvider: process.env.VSUB_SHERPA_PROVIDER === 'cuda' ? 'cuda' : 'cpu',
+      fireRedProvider: process.env.VSUB_SHERPA_PROVIDER === 'cuda' ? 'cuda' : 'cpu',
+      parakeetProvider: process.env.VSUB_SHERPA_PROVIDER === 'cuda' ? 'cuda' : 'cpu',
       macAccelMode: 'auto' as const,
       // modelsPath 不再写入 defaults：绝对默认路径会随任意一次 setSettings 被动
       // 持久化，导致与「用户主动自定义」不可区分，阻断统一存储目录跟随（design D4）。

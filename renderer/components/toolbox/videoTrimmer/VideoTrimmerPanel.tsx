@@ -355,7 +355,7 @@ export default function VideoTrimmerPanel() {
                 <ReactPlayer
                   key={videoPath}
                   ref={playerRef}
-                  url={`media://${encodeURIComponent(videoPath)}`}
+                  url={`${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub/media?path=' : 'media://'}${encodeURIComponent(videoPath)}`}
                   width="100%"
                   height="100%"
                   playing={isPlaying}

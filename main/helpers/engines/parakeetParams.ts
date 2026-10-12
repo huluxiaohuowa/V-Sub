@@ -1,3 +1,4 @@
+import { sherpaProvider } from '../../vos/provider';
 import { getNumericSetting } from './transcribeShared';
 
 /** Parakeet TDT 专属参数映射：SmartSub 统一 settings → sherpa-onnx addon 参数。 */
@@ -26,7 +27,7 @@ export function buildParakeetParams(
 ): ParakeetAddonParams {
   const s = settings as ParakeetEngineSettings;
   return {
-    provider: s.parakeetProvider === 'cuda' ? 'cuda' : 'cpu',
+    provider: sherpaProvider(s.parakeetProvider as string | undefined),
     num_threads:
       Number(s.parakeetNumThreads) > 0 ? Number(s.parakeetNumThreads) : 2,
     vad_threshold: getNumericSetting(s.vadThreshold, 0.5),

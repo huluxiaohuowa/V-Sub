@@ -850,7 +850,7 @@ const Layout = ({ children }) => {
           className="titlebar-no-drag mb-2 flex h-9 w-9 shrink-0 items-center justify-center"
         >
           <Image
-            src="/images/brand/logo-mark.png"
+            src={process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub/images/brand/logo-mark.png' : '/images/brand/logo-mark.png'}
             alt=""
             width={32}
             height={32}

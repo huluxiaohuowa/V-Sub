@@ -14,7 +14,7 @@ export function getSherpaLibStatus(): SherpaLibStatus {
   const installed = isSherpaLibInstalled();
   return {
     installed,
-    version: installed ? SHERPA_VERSION : undefined,
+    version: installed ? (process.env.VSUB_SHERPA_VERSION || SHERPA_VERSION) : undefined,
     platform: installed ? getSherpaPlatformKey() : undefined,
   };
 }

@@ -42,7 +42,7 @@ import type {
 import { CLONE_TARGET_RANGES } from '../../../types/voiceClone';
 
 function mediaUrl(p: string): string {
-  return `media://${encodeURIComponent(p)}?v=${Date.now()}`;
+  return `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub/media?path=' : 'media://'}${encodeURIComponent(p)}${process.env.NEXT_PUBLIC_VSUB_WEB ? '&' : '?'}v=${Date.now()}`;
 }
 
 function baseName(p: string): string {

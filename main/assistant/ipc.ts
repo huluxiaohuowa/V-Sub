@@ -1,9 +1,9 @@
+import { ipcMain } from '../automation/handlers';
 import path from 'path';
 import {
   app,
   BrowserWindow,
   dialog,
-  ipcMain,
   type WebContents,
 } from 'electron';
 import { z } from 'zod';
@@ -163,6 +163,7 @@ export function setupAssistantHandlers(service: AutomationService) {
     options: { region?: 'workspace' | 'full' } = {},
     signal?: AbortSignal,
   ) {
+    if (process.env.VSUB_WEB) throw new Error('SCREEN_CAPTURE_UNAVAILABLE_IN_BROWSER');
     if (signal?.aborted || sender.isDestroyed())
       throw new Error('WINDOW_UNAVAILABLE');
     const win = BrowserWindow.fromWebContents(sender);

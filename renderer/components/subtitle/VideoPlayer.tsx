@@ -79,7 +79,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         <div className="mb-2 rounded-md border bg-muted/30 p-1.5">
           <ReactPlayer
             ref={playerRef}
-            url={`media://${encodeURIComponent(videoPath)}`}
+            url={`${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub/media?path=' : 'media://'}${encodeURIComponent(videoPath)}`}
             width="100%"
             height="54px"
             playing={isPlaying}
@@ -106,7 +106,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         {videoPath ? (
           <ReactPlayer
             ref={playerRef}
-            url={`media://${encodeURIComponent(videoPath)}`}
+            url={`${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub/media?path=' : 'media://'}${encodeURIComponent(videoPath)}`}
             width="100%"
             height="100%"
             style={{ maxHeight: '38.5vh' }}

@@ -134,7 +134,7 @@ export function useVoicePreview({
         active.stream?.stop();
         setPreviewLoading(false);
         await new Promise<void>((resolve, reject) => {
-          const audio = new Audio(`media://${encodeURIComponent(result.data)}`);
+          const audio = new Audio(`${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub/media?path=' : 'media://'}${encodeURIComponent(result.data)}`);
           active.audio = audio;
           active.finish = resolve;
           audio.onended = () => resolve();
