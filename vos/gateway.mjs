@@ -44,6 +44,7 @@ async function workerFor(user) {
     catch { if ((await readFile(ownerFile, 'utf8')) !== user.namespace) throw new Error('User namespace collision'); }
     await chown(root, uid, uid); await chmod(root, 0o700);
     const endpointFile = path.join(root, 'web-endpoint.json');
+    await fs.promises.rm(endpointFile, { force: true });
     const workerToken = randomBytes(32).toString('hex');
     const child = spawn(path.join(appRoot, 'node_modules/electron/dist/electron'), [appRoot, '--no-sandbox', '--disable-gpu', '--automation-background', `--automation-data-dir=${root}`], {
       uid, gid: uid, cwd: root,

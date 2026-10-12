@@ -1,0 +1,4 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+COPY vos/ /opt/v-sub/vos/
+RUN node --check /opt/v-sub/vos/gateway.mjs

@@ -30,6 +30,8 @@ Tags use `prefix_YYYYMMDD`. Build and publish CPU images first. GPU builds reuse
 
 Use the same build/publish commands with the explicit GPU sheet, for example `bash docker/build_image.sh --sheet thor_spark --build-only`. All records use the `v-sub` component column in the canonical Feishu spreadsheet.
 
+For changes confined to `vos/`, `--gateway-only` updates the verified existing profile image without rebuilding the renderer or native libraries; the normal build remains a complete source build.
+
 After code delivery, image push and Feishu verification, run locally:
 
 ```bash

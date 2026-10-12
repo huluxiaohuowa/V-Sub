@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-sheet=""; build=true; publish=true; mode=full
+sheet=""; build=true; publish=true; mode=full; gateway_only=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --gateway-only) gateway_only=true; shift ;;
     --sheet) sheet="$2"; shift 2 ;;
     --build-only) [[ "$mode" == full ]]; mode=build-only; publish=false; shift ;;
     --publish-only) [[ "$mode" == full ]]; mode=publish-only; build=false; shift ;;
@@ -27,7 +28,10 @@ image="${registry}/v-sub:${prefix}_${date_tag}"
 export FEISHU_CONFIG_FILE="${FEISHU_CONFIG_FILE:-${HOME}/.feishu.components.json}"
 [[ -s "$FEISHU_CONFIG_FILE" ]] || export FEISHU_CONFIG_FILE="$HOME/.feishu.json"
 if [[ "$build" == true ]]; then
-  if [[ "$gpu" == false ]]; then
+  if [[ "$gateway_only" == true ]]; then
+    docker image inspect "$image" >/dev/null
+    docker buildx build --builder default --load --provenance=false --sbom=false --build-arg "BASE_IMAGE=$image" -f docker/Dockerfile.gateway -t "$image" .
+  elif [[ "$gpu" == false ]]; then
     docker buildx build --builder default --load --target runtime-base --provenance=false --sbom=false \
       --build-arg "NODE_IMAGE=${registry}/node:24-bookworm-slim-${arch}" \
       -f docker/Dockerfile -t "v-sub-runtime:${prefix}" .
