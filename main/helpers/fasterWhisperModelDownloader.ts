@@ -1,3 +1,4 @@
+import { usesModelHub, downloadHubModel, cancelHubDownload } from '../vos/modelhub';
 import { app, BrowserWindow } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -215,6 +216,7 @@ export class FasterWhisperModelDownloader {
   }
 
   cancel(): void {
+    if (usesModelHub()) cancelHubDownload('ct2');
     if (this.abortController) {
       this.abortController.abort();
       this.abortController = null;
@@ -224,6 +226,7 @@ export class FasterWhisperModelDownloader {
   }
 
   async download(modelId: string, source: string): Promise<boolean> {
+    if (usesModelHub()) return downloadHubModel('ct2', modelId, this.mainWindow);
     if (isCt2ModelInstalled(modelId)) {
       return true;
     }

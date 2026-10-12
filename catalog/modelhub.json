@@ -1,0 +1,980 @@
+[
+  {
+    "group": "funasr",
+    "id": "sensevoice-small",
+    "required": [
+      "model.int8.onnx",
+      "tokens.txt"
+    ],
+    "layout": "flat",
+    "files": [
+      "model.int8.onnx",
+      "tokens.txt"
+    ],
+    "repo": "vivibit/v-voice-sensevoice-int8"
+  },
+  {
+    "group": "funasr",
+    "id": "paraformer-zh",
+    "required": [
+      "model.int8.onnx",
+      "tokens.txt"
+    ],
+    "layout": "flat",
+    "files": [
+      "model.int8.onnx",
+      "tokens.txt"
+    ],
+    "repo": "vivibit/v-sub-paraformer-zh",
+    "publish": {
+      "hf_repo": "csukuangfj/sherpa-onnx-paraformer-zh-2024-03-09",
+      "files": [
+        "model.int8.onnx",
+        "tokens.txt"
+      ],
+      "extras": {}
+    }
+  },
+  {
+    "group": "qwen",
+    "id": "qwen3-asr-0.6b",
+    "required": [
+      "conv_frontend.onnx",
+      "encoder.int8.onnx",
+      "decoder.int8.onnx",
+      "tokenizer/vocab.json",
+      "tokenizer/merges.txt",
+      "tokenizer/tokenizer_config.json"
+    ],
+    "layout": "flat",
+    "mapping": {
+      "conv_frontend.onnx": "model_0.6B/conv_frontend.onnx",
+      "encoder.int8.onnx": "model_0.6B/encoder.int8.onnx",
+      "decoder.int8.onnx": "model_0.6B/decoder.int8.onnx",
+      "tokenizer/vocab.json": "tokenizer/vocab.json",
+      "tokenizer/merges.txt": "tokenizer/merges.txt",
+      "tokenizer/tokenizer_config.json": "tokenizer/tokenizer_config.json",
+      "tokenizer/config.json": "tokenizer/config.json",
+      "tokenizer/chat_template.json": "tokenizer/chat_template.json",
+      "tokenizer/preprocessor_config.json": "tokenizer/preprocessor_config.json"
+    },
+    "files": [
+      "model_0.6B/conv_frontend.onnx",
+      "model_0.6B/encoder.int8.onnx",
+      "model_0.6B/decoder.int8.onnx",
+      "tokenizer/vocab.json",
+      "tokenizer/merges.txt",
+      "tokenizer/tokenizer_config.json",
+      "tokenizer/config.json",
+      "tokenizer/chat_template.json",
+      "tokenizer/preprocessor_config.json"
+    ],
+    "repo": "zengshuishui/Qwen3-ASR-onnx",
+    "sizes": {
+      "conv_frontend.onnx": 44148281,
+      "encoder.int8.onnx": 182491662,
+      "decoder.int8.onnx": 755914231,
+      "tokenizer/vocab.json": 2776833,
+      "tokenizer/merges.txt": 1671853,
+      "tokenizer/tokenizer_config.json": 12487,
+      "tokenizer/config.json": 6193,
+      "tokenizer/chat_template.json": 1161,
+      "tokenizer/preprocessor_config.json": 330
+    }
+  },
+  {
+    "group": "qwen",
+    "id": "qwen3-asr-1.7b",
+    "required": [
+      "conv_frontend.onnx",
+      "encoder.int8.onnx",
+      "decoder.int8.onnx",
+      "tokenizer/vocab.json",
+      "tokenizer/merges.txt",
+      "tokenizer/tokenizer_config.json"
+    ],
+    "layout": "flat",
+    "mapping": {
+      "conv_frontend.onnx": "model_1.7B/conv_frontend.onnx",
+      "encoder.int8.onnx": "model_1.7B/encoder.int8.onnx",
+      "decoder.int8.onnx": "model_1.7B/decoder.int8.onnx",
+      "tokenizer/vocab.json": "tokenizer/vocab.json",
+      "tokenizer/merges.txt": "tokenizer/merges.txt",
+      "tokenizer/tokenizer_config.json": "tokenizer/tokenizer_config.json",
+      "tokenizer/config.json": "tokenizer/config.json",
+      "tokenizer/chat_template.json": "tokenizer/chat_template.json",
+      "tokenizer/preprocessor_config.json": "tokenizer/preprocessor_config.json"
+    },
+    "files": [
+      "model_1.7B/conv_frontend.onnx",
+      "model_1.7B/encoder.int8.onnx",
+      "model_1.7B/decoder.int8.onnx",
+      "tokenizer/vocab.json",
+      "tokenizer/merges.txt",
+      "tokenizer/tokenizer_config.json",
+      "tokenizer/config.json",
+      "tokenizer/chat_template.json",
+      "tokenizer/preprocessor_config.json"
+    ],
+    "repo": "zengshuishui/Qwen3-ASR-onnx",
+    "sizes": {
+      "conv_frontend.onnx": 48080441,
+      "encoder.int8.onnx": 314222162,
+      "decoder.int8.onnx": 2037458645,
+      "tokenizer/vocab.json": 2776833,
+      "tokenizer/merges.txt": 1671853,
+      "tokenizer/tokenizer_config.json": 12487,
+      "tokenizer/config.json": 6193,
+      "tokenizer/chat_template.json": 1161,
+      "tokenizer/preprocessor_config.json": 330
+    }
+  },
+  {
+    "group": "firered",
+    "id": "fire-red-asr-large-zh-en",
+    "required": [
+      "encoder.int8.onnx",
+      "decoder.int8.onnx",
+      "tokens.txt"
+    ],
+    "layout": "flat",
+    "files": [
+      "encoder.int8.onnx",
+      "decoder.int8.onnx",
+      "tokens.txt"
+    ],
+    "repo": "csukuangfj/sherpa-onnx-fire-red-asr-large-zh_en-2025-02-16"
+  },
+  {
+    "group": "parakeet",
+    "id": "parakeet-tdt-0.6b-v3",
+    "required": [
+      "encoder.int8.onnx",
+      "decoder.int8.onnx",
+      "joiner.int8.onnx",
+      "tokens.txt"
+    ],
+    "layout": "flat",
+    "repo": "vivibit/v-sub-parakeet-tdt-0.6b-v3",
+    "publish": {
+      "archive": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8.tar.bz2",
+      "extras": {}
+    }
+  },
+  {
+    "group": "parakeet",
+    "id": "parakeet-tdt-0.6b-v2",
+    "required": [
+      "encoder.int8.onnx",
+      "decoder.int8.onnx",
+      "joiner.int8.onnx",
+      "tokens.txt"
+    ],
+    "layout": "flat",
+    "repo": "vivibit/v-sub-parakeet-tdt-0.6b-v2",
+    "publish": {
+      "archive": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2",
+      "extras": {}
+    }
+  },
+  {
+    "group": "parakeet",
+    "id": "parakeet-tdt_ctc-0.6b-ja",
+    "required": [
+      "model.int8.onnx",
+      "tokens.txt"
+    ],
+    "layout": "flat",
+    "repo": "vivibit/v-sub-parakeet-tdt-ctc-0.6b-ja",
+    "publish": {
+      "archive": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt_ctc-0.6b-ja-35000-int8.tar.bz2",
+      "extras": {}
+    }
+  },
+  {
+    "group": "tts",
+    "id": "kokoro-multi-lang-v1_1",
+    "required": [
+      "model.int8.onnx",
+      "voices.bin",
+      "tokens.txt",
+      "lexicon-us-en.txt",
+      "lexicon-zh.txt",
+      "espeak-ng-data/phontab"
+    ],
+    "layout": "flat",
+    "repo": "vivibit/v-sub-kokoro-multi-lang-v1-1",
+    "publish": {
+      "archive": "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-int8-multi-lang-v1_1.tar.bz2",
+      "extras": {}
+    }
+  },
+  {
+    "group": "tts",
+    "id": "vits-zh-aishell3",
+    "required": [
+      "model.onnx",
+      "tokens.txt",
+      "lexicon.txt"
+    ],
+    "layout": "flat",
+    "repo": "vivibit/v-sub-vits-zh-aishell3",
+    "publish": {
+      "archive": "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-icefall-zh-aishell3.tar.bz2",
+      "extras": {}
+    }
+  },
+  {
+    "group": "tts",
+    "id": "zipvoice-distill-zh-en",
+    "required": [
+      "encoder.int8.onnx",
+      "decoder.int8.onnx",
+      "tokens.txt",
+      "lexicon.txt",
+      "espeak-ng-data/phontab",
+      "vocos_24khz.onnx"
+    ],
+    "layout": "flat",
+    "repo": "vivibit/v-voice-zipvoice-zh-en-int8"
+  },
+  {
+    "group": "ct2",
+    "id": "tiny",
+    "repo": "Systran/faster-whisper-tiny",
+    "hfRepo": "Systran/faster-whisper-tiny",
+    "layout": "ct2",
+    "required": [
+      "model.bin",
+      "config.json",
+      "tokenizer.json"
+    ],
+    "files": [
+      ".gitattributes",
+      "config.json",
+      "configuration.json",
+      "model.bin",
+      "README.md",
+      "tokenizer.json",
+      "vocabulary.txt"
+    ]
+  },
+  {
+    "group": "ct2",
+    "id": "base",
+    "repo": "Systran/faster-whisper-base",
+    "hfRepo": "Systran/faster-whisper-base",
+    "layout": "ct2",
+    "required": [
+      "model.bin",
+      "config.json",
+      "tokenizer.json"
+    ],
+    "files": [
+      ".gitattributes",
+      "config.json",
+      "configuration.json",
+      "model.bin",
+      "README.md",
+      "tokenizer.json",
+      "vocabulary.txt"
+    ]
+  },
+  {
+    "group": "ct2",
+    "id": "small",
+    "repo": "Systran/faster-whisper-small",
+    "hfRepo": "Systran/faster-whisper-small",
+    "layout": "ct2",
+    "required": [
+      "model.bin",
+      "config.json",
+      "tokenizer.json"
+    ],
+    "files": [
+      ".gitattributes",
+      "config.json",
+      "configuration.json",
+      "model.bin",
+      "README.md",
+      "tokenizer.json",
+      "vocabulary.txt"
+    ]
+  },
+  {
+    "group": "ct2",
+    "id": "medium",
+    "repo": "Systran/faster-whisper-medium",
+    "hfRepo": "Systran/faster-whisper-medium",
+    "layout": "ct2",
+    "required": [
+      "model.bin",
+      "config.json",
+      "tokenizer.json"
+    ],
+    "files": [
+      ".gitattributes",
+      "config.json",
+      "configuration.json",
+      "model.bin",
+      "README.md",
+      "tokenizer.json",
+      "vocabulary.txt"
+    ]
+  },
+  {
+    "group": "ct2",
+    "id": "large-v3-turbo",
+    "repo": "pengzhendong/faster-whisper-large-v3-turbo",
+    "hfRepo": "dropbox-dash/faster-whisper-large-v3-turbo",
+    "layout": "ct2",
+    "required": [
+      "model.bin",
+      "config.json",
+      "tokenizer.json"
+    ],
+    "files": [
+      ".gitattributes",
+      "README.md",
+      "config.json",
+      "configuration.json",
+      "model.bin",
+      "preprocessor_config.json",
+      "tokenizer.json",
+      "vocabulary.json"
+    ]
+  },
+  {
+    "group": "ct2",
+    "id": "large-v3",
+    "repo": "Systran/faster-whisper-large-v3",
+    "hfRepo": "Systran/faster-whisper-large-v3",
+    "layout": "ct2",
+    "required": [
+      "model.bin",
+      "config.json",
+      "tokenizer.json"
+    ],
+    "files": [
+      ".gitattributes",
+      "config.json",
+      "configuration.json",
+      "model.bin",
+      "preprocessor_config.json",
+      "README.md",
+      "tokenizer.json",
+      "vocabulary.json"
+    ]
+  },
+  {
+    "group": "ct2",
+    "id": "distil-small.en",
+    "repo": "Systran/faster-distil-whisper-small.en",
+    "hfRepo": "Systran/faster-distil-whisper-small.en",
+    "layout": "ct2",
+    "required": [
+      "model.bin",
+      "config.json",
+      "tokenizer.json"
+    ],
+    "files": [
+      ".gitattributes",
+      "config.json",
+      "configuration.json",
+      "model.bin",
+      "preprocessor_config.json",
+      "README.md",
+      "tokenizer.json",
+      "vocabulary.json"
+    ]
+  },
+  {
+    "group": "ct2",
+    "id": "distil-medium.en",
+    "repo": "Systran/faster-distil-whisper-medium.en",
+    "hfRepo": "Systran/faster-distil-whisper-medium.en",
+    "layout": "ct2",
+    "required": [
+      "model.bin",
+      "config.json",
+      "tokenizer.json"
+    ],
+    "files": [
+      ".gitattributes",
+      "config.json",
+      "configuration.json",
+      "model.bin",
+      "preprocessor_config.json",
+      "README.md",
+      "tokenizer.json",
+      "vocabulary.json"
+    ]
+  },
+  {
+    "group": "ct2",
+    "id": "distil-large-v3",
+    "repo": "Systran/faster-distil-whisper-large-v3",
+    "hfRepo": "Systran/faster-distil-whisper-large-v3",
+    "layout": "ct2",
+    "required": [
+      "model.bin",
+      "config.json",
+      "tokenizer.json"
+    ],
+    "files": [
+      ".gitattributes",
+      "config.json",
+      "configuration.json",
+      "model.bin",
+      "preprocessor_config.json",
+      "README.md",
+      "tokenizer.json",
+      "vocabulary.json"
+    ]
+  },
+  {
+    "group": "ggml",
+    "id": "base-q5_1",
+    "repo": "vivibit/v-sub-whisper-base-q5_1",
+    "layout": "ggml",
+    "required": [
+      "ggml-base-q5_1.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-base-q5_1.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "base-q8_0",
+    "repo": "vivibit/v-sub-whisper-base-q8_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-base-q8_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-base-q8_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "base",
+    "repo": "vivibit/v-sub-whisper-base",
+    "layout": "ggml",
+    "required": [
+      "ggml-base.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-base.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "base.en-q5_1",
+    "repo": "vivibit/v-sub-whisper-base-en-q5_1",
+    "layout": "ggml",
+    "required": [
+      "ggml-base.en-q5_1.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-base.en-q5_1.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "base.en-q8_0",
+    "repo": "vivibit/v-sub-whisper-base-en-q8_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-base.en-q8_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-base.en-q8_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "base.en",
+    "repo": "vivibit/v-sub-whisper-base-en",
+    "layout": "ggml",
+    "required": [
+      "ggml-base.en.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-base.en.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "large-v1",
+    "repo": "vivibit/v-sub-whisper-large-v1",
+    "layout": "ggml",
+    "required": [
+      "ggml-large-v1.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-large-v1.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "large-v2-q5_0",
+    "repo": "vivibit/v-sub-whisper-large-v2-q5_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-large-v2-q5_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-large-v2-q5_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "large-v2-q8_0",
+    "repo": "vivibit/v-sub-whisper-large-v2-q8_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-large-v2-q8_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-large-v2-q8_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "large-v2",
+    "repo": "vivibit/v-sub-whisper-large-v2",
+    "layout": "ggml",
+    "required": [
+      "ggml-large-v2.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-large-v2.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "large-v3-q5_0",
+    "repo": "vivibit/v-sub-whisper-large-v3-q5_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-large-v3-q5_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-large-v3-q5_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "large-v3-turbo-q5_0",
+    "repo": "vivibit/v-sub-whisper-large-v3-turbo-q5_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-large-v3-turbo-q5_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-large-v3-turbo-q5_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "large-v3-turbo-q8_0",
+    "repo": "vivibit/v-sub-whisper-large-v3-turbo-q8_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-large-v3-turbo-q8_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-large-v3-turbo-q8_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "large-v3-turbo",
+    "repo": "vivibit/v-sub-whisper-large-v3-turbo",
+    "layout": "ggml",
+    "required": [
+      "ggml-large-v3-turbo.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-large-v3-turbo.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "large-v3",
+    "repo": "vivibit/v-sub-whisper-large-v3",
+    "layout": "ggml",
+    "required": [
+      "ggml-large-v3.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-large-v3.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "medium-q5_0",
+    "repo": "vivibit/v-sub-whisper-medium-q5_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-medium-q5_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-medium-q5_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "medium-q8_0",
+    "repo": "vivibit/v-sub-whisper-medium-q8_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-medium-q8_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-medium-q8_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "medium",
+    "repo": "vivibit/v-sub-whisper-medium",
+    "layout": "ggml",
+    "required": [
+      "ggml-medium.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-medium.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "medium.en-q5_0",
+    "repo": "vivibit/v-sub-whisper-medium-en-q5_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-medium.en-q5_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-medium.en-q5_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "medium.en-q8_0",
+    "repo": "vivibit/v-sub-whisper-medium-en-q8_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-medium.en-q8_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-medium.en-q8_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "medium.en",
+    "repo": "vivibit/v-sub-whisper-medium-en",
+    "layout": "ggml",
+    "required": [
+      "ggml-medium.en.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-medium.en.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "small-q5_1",
+    "repo": "vivibit/v-sub-whisper-small-q5_1",
+    "layout": "ggml",
+    "required": [
+      "ggml-small-q5_1.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-small-q5_1.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "small-q8_0",
+    "repo": "vivibit/v-sub-whisper-small-q8_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-small-q8_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-small-q8_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "small",
+    "repo": "vivibit/v-sub-whisper-small",
+    "layout": "ggml",
+    "required": [
+      "ggml-small.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-small.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "small.en-q5_1",
+    "repo": "vivibit/v-sub-whisper-small-en-q5_1",
+    "layout": "ggml",
+    "required": [
+      "ggml-small.en-q5_1.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-small.en-q5_1.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "small.en-q8_0",
+    "repo": "vivibit/v-sub-whisper-small-en-q8_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-small.en-q8_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-small.en-q8_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "small.en",
+    "repo": "vivibit/v-sub-whisper-small-en",
+    "layout": "ggml",
+    "required": [
+      "ggml-small.en.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-small.en.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "tiny-q5_1",
+    "repo": "vivibit/v-sub-whisper-tiny-q5_1",
+    "layout": "ggml",
+    "required": [
+      "ggml-tiny-q5_1.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-tiny-q5_1.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "tiny-q8_0",
+    "repo": "vivibit/v-sub-whisper-tiny-q8_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-tiny-q8_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-tiny-q8_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "tiny",
+    "repo": "vivibit/v-sub-whisper-tiny",
+    "layout": "ggml",
+    "required": [
+      "ggml-tiny.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-tiny.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "tiny.en-q5_1",
+    "repo": "vivibit/v-sub-whisper-tiny-en-q5_1",
+    "layout": "ggml",
+    "required": [
+      "ggml-tiny.en-q5_1.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-tiny.en-q5_1.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "tiny.en-q8_0",
+    "repo": "vivibit/v-sub-whisper-tiny-en-q8_0",
+    "layout": "ggml",
+    "required": [
+      "ggml-tiny.en-q8_0.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-tiny.en-q8_0.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "ggml",
+    "id": "tiny.en",
+    "repo": "vivibit/v-sub-whisper-tiny-en",
+    "layout": "ggml",
+    "required": [
+      "ggml-tiny.en.bin"
+    ],
+    "publish": {
+      "hf_repo": "ggerganov/whisper.cpp",
+      "files": [
+        "ggml-tiny.en.bin"
+      ],
+      "license": "mit"
+    }
+  },
+  {
+    "group": "diarization",
+    "id": "default",
+    "repo": "vivibit/v-sub-speaker-diarization",
+    "layout": "flat",
+    "required": [
+      "pyannote/model.onnx",
+      "3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx"
+    ],
+    "publish": {
+      "archive": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+      "archive_target": "pyannote",
+      "extras": {
+        "3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx"
+      }
+    }
+  }
+]

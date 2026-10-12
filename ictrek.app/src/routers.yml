@@ -1,15 +1,10 @@
 routers:
-  - id: com-ictrek-v-sub
-    kind: group
-    title: {zh-CN: V-Sub, zh-TW: V-Sub, en: V-Sub}
+  - id: v-sub
+    kind: page
+    title: {zh-CN: V-Sub 字幕工作台, zh-TW: V-Sub 字幕工作臺, en: V-Sub Subtitle Studio}
     icon: lucide:captions
     order: 220
-    children:
-      - id: v-sub
-        kind: page
-        title: {zh-CN: 字幕工作台, zh-TW: 字幕工作臺, en: Subtitle Studio}
-        icon: lucide:captions
-        iframe-src: /app/com.ictrek.v-sub/?v=__APP_VERSION__
-        keep-alive: true
-        entry-point: true
-        embed: true
+    iframe-src: /app/com.ictrek.v-sub/?v=__APP_VERSION__
+    keep-alive: true
+    entry-point: true
+    embed: true

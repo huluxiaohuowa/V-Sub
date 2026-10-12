@@ -98,5 +98,6 @@
     "distil-large-v3": "蒸馏版 large-v3，体积更小、速度更快，仅英文",
     "distil-medium.en": "蒸馏版 medium，仅英文",
     "distil-small.en": "蒸馏版 small，仅英文"
-  }
+  },
+  "modelHubDownload": "通过 Model Hub 从 ModelScope 下载。公共模型统一共享；此处移除模型仅解除当前账户的使用，磁盘清理由 Model Hub 管理。"
 }

@@ -118,7 +118,7 @@ function StatusDot({ tone, label }: { tone: StatusTone; label?: string }) {
  * 选中态为本地 state，不写全局；不提供"设为当前/启用"。
  */
 const EngineModelTab: React.FC = () => {
-  const { t } = useTranslation('resources');
+  const { t } = useTranslation(['resources', 'modelsControl']);
   const { t: commonT } = useTranslation('common');
 
   // 记住上次选中的视图；首次进入默认「总览」（三个配置页统一落地动线）。
@@ -944,6 +944,7 @@ const EngineModelTab: React.FC = () => {
             ['localCli', 'fasterWhisper'].includes(effectiveLocalView))) && (
           <SettingsPersistenceStatus state={engineSettings.persistence} />
         )}
+        {process.env.NEXT_PUBLIC_VSUB_WEB === '1' && <p className="px-3 text-xs text-muted-foreground">{t('modelsControl:modelHubDownload')}</p>}
         <div className="grid flex-1 min-h-0 grid-cols-1 gap-2.5 md:grid-cols-[248px_minmax(0,1fr)]">
           <Panel className="min-h-0 overflow-hidden">
             <PanelHeader

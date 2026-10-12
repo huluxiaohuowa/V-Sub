@@ -1,3 +1,4 @@
+import { usesModelHub, downloadHubModel, cancelHubDownload } from '../../vos/modelhub';
 import { BrowserWindow } from 'electron';
 import fs from 'fs';
 import path from 'path';
@@ -54,6 +55,7 @@ export class SpeakerDiarizationModelDownloader {
   }
 
   cancel(): void {
+    if (usesModelHub()) cancelHubDownload('diarization');
     this.abortController?.abort();
     this.abortController = null;
     this.progress = { ...this.progress, status: 'idle' };
@@ -260,6 +262,7 @@ export class SpeakerDiarizationModelDownloader {
   async download(
     source: SpeakerDiarizationModelSource = SPEAKER_DIARIZATION_DEFAULT_SOURCE,
   ): Promise<boolean> {
+    if (usesModelHub()) return downloadHubModel('diarization', 'default', this.mainWindow);
     if (isSpeakerDiarizationModelInstalled()) return true;
     this.abortController = new AbortController();
     this.startedAt = Date.now();

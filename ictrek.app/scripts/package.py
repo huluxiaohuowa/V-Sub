@@ -147,9 +147,11 @@ def package(version: str, stage: Path) -> Path:
     if 'external: true' not in compose or 'aliases:' not in compose or 'vos_default:' not in compose:
         raise RuntimeError("missing VOS network or aliases")
     routers = (stage / "routers.yml").read_text()
-    for field in ['com-ictrek-v-sub', 'id: v-sub', '/app/com.ictrek.v-sub/', 'entry-point: true', 'embed: true']:
+    for field in ['id: v-sub', 'kind: page', '/app/com.ictrek.v-sub/', 'entry-point: true', 'embed: true']:
         if field not in routers:
             raise RuntimeError(f"missing route field: {field}")
+    if 'kind: group' in routers or 'children:' in routers:
+        raise RuntimeError("V-Sub must use one top-level page without nested groups")
     return output
 
 

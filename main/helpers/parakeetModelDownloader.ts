@@ -1,3 +1,4 @@
+import { usesModelHub, downloadHubModel, cancelHubDownload } from '../vos/modelhub';
 import { BrowserWindow } from 'electron';
 import { randomUUID } from 'crypto';
 import * as fs from 'fs';
@@ -62,6 +63,7 @@ export class ParakeetModelDownloader {
   }
 
   async cancel(): Promise<void> {
+    if (usesModelHub()) cancelHubDownload('parakeet');
     const inFlight = this.inFlight;
     this.abortController?.abort();
     if (inFlight) {
@@ -146,6 +148,7 @@ export class ParakeetModelDownloader {
     id: ParakeetModelId,
     source: ParakeetModelSource = PARAKEET_DEFAULT_SOURCE,
   ): Promise<boolean> {
+    if (usesModelHub()) return downloadHubModel('parakeet', id, this.mainWindow);
     if (isParakeetModelInstalled(id)) return true;
     if (this.inFlight) {
       throw new Error('another Parakeet model download is still finishing');

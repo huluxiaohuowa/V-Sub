@@ -11,3 +11,9 @@
 CPU profile 使用 CPU 本地引擎；AMD CUDA、ARM CUDA、Jetson/L4T 和 Thor profile 使用 V-Voice 对应平台的专用 sherpa-onnx GPU wheel 及匹配的 CUDA / ONNX Runtime 库。L4T Paraformer 沿用 V-Voice 的 CPU 兼容回退。ARM 的 whisper.cpp 插件从上游源码构建。其他引擎是否可用以对应运行时及模型安装状态为准，不将不支持的运行时标成可用。
 
 语言菜单提供「跟随 VOS / 简体中文 / 繁體中文 / English」。切换不刷新页面。独立打开回退浏览器语言；手动选择只写入 V-Sub 自己的浏览器存储。
+
+## 本地模型统一管理
+
+先安装 Model Hub，并将 `MODEL_HUB_SHARED_MODELS_PATH` 配置为与 Model Hub 相同的共享目录。V-Sub 通过 Model Hub 从 ModelScope 下载模型，缺失的兼容模型由 vivibit 仓库提供。共享权重只读挂载，删除操作只解除当前账户绑定；全局磁盘清理由 Model Hub 完成。个人音色和任务继续隔离。已有本地文件继续可用，重新下载后切换到共享权重并保留旧文件备份。
+
+GPU 页面分别显示 sherpa-onnx 内置运行时与 whisper.cpp 可选插件。未检测到 nvcc 不表示缺少 CUDA 运行库，也不意味着必须更新宿主机驱动。

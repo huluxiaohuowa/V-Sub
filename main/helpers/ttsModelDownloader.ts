@@ -1,3 +1,4 @@
+import { usesModelHub, downloadHubModel, cancelHubDownload } from '../vos/modelhub';
 import { BrowserWindow } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -63,6 +64,7 @@ export class TtsModelDownloader {
   }
 
   cancel(): void {
+    if (usesModelHub()) cancelHubDownload('tts');
     if (this.abortController) {
       this.abortController.abort();
       this.abortController = null;
@@ -136,6 +138,7 @@ export class TtsModelDownloader {
     id: TtsModelId,
     source: TtsModelSource = TTS_DEFAULT_SOURCE,
   ): Promise<boolean> {
+    if (usesModelHub()) return downloadHubModel('tts', id, this.mainWindow);
     if (isTtsModelInstalled(id)) return true;
     const spec = TTS_MODELS[id];
     const key = getTtsProgressKey(id);

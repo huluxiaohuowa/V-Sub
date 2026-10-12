@@ -1,3 +1,4 @@
+import { syncHubModels, detachHubModel } from './modelhub';
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
@@ -77,6 +78,10 @@ export async function startWebServer() {
       if (channel === 'sync-title-bar-overlay' || channel === 'window-chrome:getState') { reply(200, { result: null }); return; }
       // Browser operations reuse the exact desktop handlers. OS UID and data roots isolate native IO.
       if (channel === 'vos:router-status') { reply(200, { result: { ...routerStatus(), local: localRegistrationStatus() } }); return; }
+      if (channel === 'vos:runtime-status') { reply(200, { result: { profile: process.env.VSUB_PROFILE || 'cpu', sherpaProvider: process.env.VSUB_SHERPA_PROVIDER || 'cpu', sherpaVersion: process.env.VSUB_SHERPA_VERSION || '1.13.2' } }); return; }
+      const deletion: Record<string, string> = { deleteModel: 'ggml', deleteCt2Model: 'ct2', deleteFunasrModel: 'funasr', deleteQwenModel: 'qwen', deleteFireRedModel: 'firered', deleteParakeetModel: 'parakeet', deleteTtsModel: 'tts', deleteSpeakerDiarizationModel: 'diarization' };
+      if (deletion[channel]) detachHubModel(deletion[channel], channel === 'deleteSpeakerDiarizationModel' ? 'default' : String(args[0]).toLowerCase());
+      await syncHubModels().catch(() => {});
       const event = browserEvent(clientId); const context = { saved: [] as string[] };
       const result = await contexts.run(context, async () => mode === 'send' ? sendHandler(channel, event, ...args) : invokeHandler(channel, event, ...args));
       reply(200, { result: result ?? null, downloads: context.saved.filter(file => fs.existsSync(file)) });
@@ -85,6 +90,9 @@ export async function startWebServer() {
   await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve));
   const port = (server.address() as any).port;
   fs.writeFileSync(path.join(root, 'web-endpoint.json'), JSON.stringify({ port, pid: process.pid }), { mode: 0o600 });
+  await syncHubModels().catch(() => {});
+  const hubTimer = setInterval(() => { void syncHubModels().catch(() => {}); }, 15000);
+  hubTimer.unref();
   startLocalRegistration();
   app.once('will-quit', () => server.close());
 }

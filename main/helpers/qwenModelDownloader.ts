@@ -1,3 +1,4 @@
+import { usesModelHub, downloadHubModel, cancelHubDownload } from '../vos/modelhub';
 import { BrowserWindow } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -80,6 +81,7 @@ export class QwenModelDownloader {
   }
 
   cancel(): void {
+    if (usesModelHub()) cancelHubDownload('qwen');
     const session = this.activeSession;
     if (session && !session.controller.signal.aborted) {
       session.controller.abort();
@@ -162,6 +164,7 @@ export class QwenModelDownloader {
     id: QwenModelId,
     source: QwenModelSource = QWEN_DEFAULT_SOURCE,
   ): Promise<boolean> {
+    if (usesModelHub()) return downloadHubModel('qwen', id, this.mainWindow);
     if (this.activeSession) {
       throw new Error('another qwen model download is in progress');
     }

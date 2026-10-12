@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-sheet=""; build=true; publish=true; mode=full; gateway_only=false
+sheet=""; build=true; publish=true; mode=full; gateway_only=false; app_only=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --app-only) app_only=true; shift ;;
     --gateway-only) gateway_only=true; shift ;;
     --sheet) sheet="$2"; shift 2 ;;
     --build-only) [[ "$mode" == full ]]; mode=build-only; publish=false; shift ;;
@@ -28,7 +29,14 @@ image="${registry}/v-sub:${prefix}_${date_tag}"
 export FEISHU_CONFIG_FILE="${FEISHU_CONFIG_FILE:-${HOME}/.feishu.components.json}"
 [[ -s "$FEISHU_CONFIG_FILE" ]] || export FEISHU_CONFIG_FILE="$HOME/.feishu.json"
 if [[ "$build" == true ]]; then
-  if [[ "$gateway_only" == true ]]; then
+  if [[ "$app_only" == true ]]; then
+    if [[ "$arch" == amd64 ]]; then cpu_prefix=amd; else cpu_prefix=arm; fi
+    workbench="${WORKBENCH_IMAGE:-${registry}/v-sub:${cpu_prefix}_${date_tag}}"
+    docker image inspect "$image" >/dev/null
+    docker buildx build --builder default --load --provenance=false --sbom=false \
+      --build-arg "BASE_IMAGE=$image" --build-arg "WORKBENCH_IMAGE=$workbench" --build-arg "PROFILE=$profile" \
+      -f docker/Dockerfile.app -t "$image" .
+  elif [[ "$gateway_only" == true ]]; then
     docker image inspect "$image" >/dev/null
     docker buildx build --builder default --load --provenance=false --sbom=false --build-arg "BASE_IMAGE=$image" -f docker/Dockerfile.gateway -t "$image" .
   elif [[ "$gpu" == false ]]; then

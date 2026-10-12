@@ -49,6 +49,7 @@ const GpuStatusHero: React.FC<GpuStatusHeroProps> = ({
   onManageInstalled,
 }) => {
   const { t } = useTranslation('settings');
+  const vos = process.env.NEXT_PUBLIC_VSUB_WEB === '1';
 
   const nvidiaRecommendation = gpuEnv.nvidia?.recommendation;
   const recommendedCudaVersion = nvidiaRecommendation?.recommendedVersion;
@@ -145,7 +146,7 @@ const GpuStatusHero: React.FC<GpuStatusHeroProps> = ({
     >
       <div className="flex items-center gap-2">
         {renderStatusIcon()}
-        <span className="font-semibold text-sm">{status.title}</span>
+        <span className="font-semibold text-sm">{vos ? `whisper.cpp · ${status.title}` : status.title}</span>
       </div>
       <div className="text-xs text-muted-foreground">
         {gpuName}
@@ -158,7 +159,7 @@ const GpuStatusHero: React.FC<GpuStatusHeroProps> = ({
             {effectiveBackend!.failedAttempts[0].error}
           </div>
         )}
-      {status.tone !== 'green' &&
+      {!vos && status.tone !== 'green' &&
         isDesktopGpuPlatform &&
         !gpuEnv.vulkanRuntime && (
           <div className="text-xs text-muted-foreground">
@@ -171,9 +172,9 @@ const GpuStatusHero: React.FC<GpuStatusHeroProps> = ({
         <div className="pt-2 border-t border-current/10 space-y-2">
           <div className="text-xs text-muted-foreground flex items-center gap-1">
             <Gauge className="w-3.5 h-3.5" />
-            {t('gpuAcceleration.upgradeHint', { gpu: gpuName })}
+            {t(vos ? 'gpuAcceleration.vosWhisperHint' : 'gpuAcceleration.upgradeHint', { gpu: gpuName })}
           </div>
-          {recommendationReason && (
+          {!vos && recommendationReason && (
             <p className="text-xs text-muted-foreground">
               {recommendationReason}
             </p>
@@ -185,7 +186,7 @@ const GpuStatusHero: React.FC<GpuStatusHeroProps> = ({
             disabled={!!downloadingVariant}
           >
             <Zap className="h-4 w-4" />
-            {t('gpuAcceleration.upgradeToCudaWithDetails', {
+            {t(vos ? 'gpuAcceleration.vosWhisperInstall' : 'gpuAcceleration.upgradeToCudaWithDetails', {
               version: recommendedCudaVersion,
               edition: editionLabel,
               sizeHint,

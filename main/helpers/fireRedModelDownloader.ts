@@ -1,3 +1,4 @@
+import { usesModelHub, downloadHubModel, cancelHubDownload } from '../vos/modelhub';
 import { BrowserWindow } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -111,6 +112,7 @@ export class FireRedModelDownloader {
   }
 
   cancel(): void {
+    if (usesModelHub()) cancelHubDownload('firered');
     if (this.abortController) {
       this.abortController.abort();
       this.abortController = null;
@@ -184,6 +186,7 @@ export class FireRedModelDownloader {
     id: FireRedModelId,
     source: FireRedModelSource = FIRERED_DEFAULT_SOURCE,
   ): Promise<boolean> {
+    if (usesModelHub()) return downloadHubModel('firered', id, this.mainWindow);
     if (isFireRedModelInstalled(id)) return true;
     const spec = FIRERED_MODELS[id];
     const key = getFireRedProgressKey(id);

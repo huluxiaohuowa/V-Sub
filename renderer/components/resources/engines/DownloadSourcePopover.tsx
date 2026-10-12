@@ -77,7 +77,8 @@ const DownloadSourcePopover: React.FC<DownloadSourcePopoverProps> = ({
 }) => {
   const { t } = useTranslation('modelsControl');
   const [copying, setCopying] = useState(false);
-  const getCopyUrl = getCopyUrlProp ?? config.getCopyUrl;
+  const vos = process.env.NEXT_PUBLIC_VSUB_WEB === '1';
+  const getCopyUrl = vos ? undefined : getCopyUrlProp ?? config.getCopyUrl;
 
   const handleCopy = async () => {
     if (!getCopyUrl || copying) return;
@@ -101,13 +102,13 @@ const DownloadSourcePopover: React.FC<DownloadSourcePopoverProps> = ({
     <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverAnchor asChild>{children}</PopoverAnchor>
       <PopoverContent align={align} className="w-80 space-y-3">
-        <DownloadSourceSelector
+        {vos ? <p className="text-sm">{t('modelHubDownload')}</p> : <DownloadSourceSelector
           label={config.label}
           value={config.value}
           options={config.options}
           onChange={config.onChange}
           hint={config.hint}
-        />
+        />}
         <div className="flex items-center gap-2">
           {getCopyUrl && (
             <Button

@@ -1,3 +1,4 @@
+import { usesModelHub, downloadHubModel, cancelHubDownload } from '../vos/modelhub';
 import { app, BrowserWindow } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -142,6 +143,7 @@ export class ModelDownloader {
   }
 
   cancel(): void {
+    if (usesModelHub()) cancelHubDownload('ggml');
     if (this.abortController) {
       this.abortController.abort();
       this.abortController = null;
@@ -155,6 +157,7 @@ export class ModelDownloader {
     source: string,
     needsCoreML: boolean,
   ): Promise<boolean> {
+    if (usesModelHub()) return downloadHubModel('ggml', model, this.mainWindow);
     const modelsPath = getPath('modelsPath') as string;
     const modelPath = path.join(modelsPath, `ggml-${model}.bin`);
     const coreMLModelPath = path.join(

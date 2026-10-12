@@ -1,0 +1,80 @@
+// Exercise real model binding/download code against the Model Hub HTTP contract.
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const os = require('node:os');
+const http = require('node:http');
+const Module = require('node:module');
+const ts = require('typescript');
+const root = fs.mkdtempSync(path.join(os.tmpdir(), 'vsub-modelhub-'));
+let userRoot = path.join(root, 'user-a');
+let rows = [], taskPhase = 'READY', pulls = [], cancellations = 0, conflict = false;
+const fixtureRepo = 'vivibit/v-sub-whisper-tiny';
+const shared = path.join(root, 'hub/export/ms', fixtureRepo, 'current');
+const writeModel = () => { fs.mkdirSync(shared, { recursive: true }); fs.writeFileSync(path.join(shared, 'ggml-tiny.bin'), 'public fixture'); };
+const originalLoad = Module._load;
+require.extensions['.ts'] = (m, f) => m._compile(ts.transpileModule(fs.readFileSync(f, 'utf8'), { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, esModuleInterop: true } }).outputText, f);
+Module._load = function (request, parent, main) {
+  if (request === 'electron') return { app: { getPath: () => userRoot } };
+  if (request === '../helpers/whisper') return { getPath: () => path.join(userRoot, 'whisper-models') };
+  return originalLoad.call(this, request, parent, main);
+};
+const server = http.createServer(async (req, res) => {
+  const json = (code, value) => { res.writeHead(code, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(value)); };
+  if (req.url.startsWith('/api/v1/models?')) return json(200, rows);
+  if (req.url === '/api/v1/models/pull') {
+    let body = ''; for await (const chunk of req) body += chunk;
+    const payload = JSON.parse(body); pulls.push(payload);
+    if (conflict) return json(409, { detail: 'already downloading' });
+    if (taskPhase === 'READY') writeModel();
+    return json(200, { task_id: 'owned-task' });
+  }
+  if (req.url.endsWith('/cancel')) { cancellations++; return json(200, {}); }
+  if (req.url === '/api/v1/tasks') return json(200, [{ task_id: 'joined-task', model_id: 'ms://' + fixtureRepo, phase: 'DOWNLOADING' }]);
+  if (req.url.startsWith('/api/v1/tasks/detail/')) return json(200, { phase: taskPhase, progress: 0.5, error_msg: 'fixture failure' });
+  return json(404, {});
+});
+const window = { webContents: { send() {} } };
+(async () => {
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  process.env.VSUB_WEB = '1';
+  process.env.MODEL_HUB_API_URL = `http://127.0.0.1:${server.address().port}`;
+  process.env.MODEL_HUB_SHARED_MODELS_PATH = path.join(root, 'hub');
+  fs.mkdirSync(userRoot);
+  const hub = require('../main/vos/modelhub.ts');
+  const dest = () => path.join(userRoot, 'whisper-models/ggml-tiny.bin');
+  await hub.downloadHubModel('ggml', 'tiny', window);
+  assert.equal(pulls[0].source, 'ms');
+  assert.equal(pulls[0].model_id, fixtureRepo);
+  assert.equal(fs.readFileSync(dest(), 'utf8'), 'public fixture');
+  assert.ok(fs.lstatSync(dest()).isSymbolicLink());
+  rows = [{ model_id: fixtureRepo, status: 'ready' }];
+  hub.detachHubModel('ggml', 'tiny'); fs.unlinkSync(dest());
+  await hub.syncHubModels(true);
+  assert.ok(!fs.existsSync(dest()));
+  assert.ok(fs.existsSync(path.join(shared, 'ggml-tiny.bin')));
+  userRoot = path.join(root, 'user-b'); fs.mkdirSync(userRoot);
+  await hub.syncHubModels(true);
+  assert.equal(fs.readFileSync(dest(), 'utf8'), 'public fixture');
+  fs.unlinkSync(dest()); fs.writeFileSync(dest(), 'private import');
+  await hub.syncHubModels(true);
+  assert.equal(fs.readFileSync(dest(), 'utf8'), 'private import');
+  await hub.downloadHubModel('ggml', 'tiny', window);
+  assert.ok(fs.readdirSync(path.dirname(dest())).some(f => f.includes('.legacy-model-')));
+  // Failed Model Hub tasks never fall back to independent HF downloads.
+  fs.rmSync(shared, { recursive: true }); fs.unlinkSync(dest()); rows = []; taskPhase = 'FAILED';
+  await assert.rejects(hub.downloadHubModel('ggml', 'tiny', window), /fixture failure/);
+  taskPhase = 'DOWNLOADING'; conflict = true;
+  const joined = hub.downloadHubModel('ggml', 'tiny', window);
+  const rejected = assert.rejects(joined, /Download cancelled/);
+  await new Promise(resolve => setTimeout(resolve, 100)); hub.cancelHubDownload('ggml'); await rejected;
+  assert.equal(cancellations, 0, 'cancelling a joined task must not cancel another account download');
+  conflict = false;
+  const owned = hub.downloadHubModel('ggml', 'tiny', window);
+  const ownedRejected = assert.rejects(owned, /Download cancelled/);
+  await new Promise(resolve => setTimeout(resolve, 100)); hub.cancelHubDownload('ggml'); await ownedRejected;
+  await new Promise(resolve => setTimeout(resolve, 50));
+  assert.equal(cancellations, 1);
+  assert.throws(() => hub.detachHubModel('ggml', '../escape'), /Unknown/);
+  console.log('PASS Model Hub pull, read-only views, per-account detach, legacy preservation, failure and cancellation ownership');
+})().catch(error => { console.error(error); process.exitCode = 1; }).finally(() => { server.close(); fs.rmSync(root, { recursive: true, force: true }); });

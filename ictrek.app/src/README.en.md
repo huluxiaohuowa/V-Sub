@@ -9,3 +9,9 @@ Upload or drop files in the browser. Files, settings, tasks and local models are
 CPU profiles run native local CPU engines. AMD CUDA, ARM CUDA, Jetson/L4T and Thor profiles reuse V-Voice’s specialized sherpa-onnx GPU wheels and matching CUDA/ONNX Runtime libraries. L4T Paraformer uses the same CPU compatibility fallback as V-Voice. The ARM whisper.cpp addon is built from source. Engine availability reflects the actual installed runtime.
 
 Choose Follow VOS, Simplified Chinese, Traditional Chinese or English without reloading or losing form contents. Manual language preferences belong only to V-Sub.
+
+## Shared local models
+
+Install Model Hub first and use its shared directory for `MODEL_HUB_SHARED_MODELS_PATH`. Model Hub downloads compatible weights from ModelScope, including missing packages mirrored under vivibit. Weights are mounted read-only. Removing a model here detaches the current account; global disk cleanup belongs to Model Hub. Personal voices and tasks remain isolated. Existing files remain usable; downloading again switches to shared weights and retains a legacy backup.
+
+The GPU panel separates bundled sherpa-onnx runtimes from optional whisper.cpp plugins. Missing nvcc does not imply missing CUDA runtime libraries or a required host-driver upgrade.

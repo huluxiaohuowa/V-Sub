@@ -321,7 +321,13 @@
       "maxCudaUnknown": "Could not parse driver CUDA version — recommending highest available pack",
       "toolkitInstalled": "CUDA Toolkit detected locally — lite pack recommended",
       "toolkitMissing": "No CUDA Toolkit detected — full pack recommended (bundled runtime)"
-    }
+    },
+    "vosSherpaTitle": "sherpa-onnx · Bundled VOS runtime",
+    "vosSherpaCuda": "{{profile}} · sherpa-onnx {{version}} · CUDA configured; runtime libraries are included in the image.",
+    "vosSherpaCpu": "{{profile}} · sherpa-onnx {{version}} · CPU runtime.",
+    "vosSherpaScope": "The actual backend depends on the selected engine and model; some models use CPU. Paraformer uses CPU on Jetson L4T. This configuration does not enable CUDA for whisper.cpp.",
+    "vosWhisperHint": "Optional whisper.cpp CUDA plugin, separate from sherpa-onnx. The full package includes runtime libraries. Missing nvcc does not mean CUDA runtime libraries are missing or that the host driver needs an upgrade.",
+    "vosWhisperInstall": "Install whisper.cpp CUDA {{version}} plugin ({{edition}} · {{sizeHint}})"
   },
   "configImportExport": "Configuration Import/Export",
   "configImportExportDescription": "Export or import app configuration (including provider settings and system settings). Exported files are encrypted and require a password.",

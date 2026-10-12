@@ -1,3 +1,4 @@
+import { usesModelHub, downloadHubModel, cancelHubDownload } from '../vos/modelhub';
 import { BrowserWindow } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -101,6 +102,7 @@ export class FunasrModelDownloader {
   }
 
   cancel(): void {
+    if (usesModelHub()) cancelHubDownload('funasr');
     if (this.abortController) {
       this.abortController.abort();
       this.abortController = null;
@@ -138,6 +140,7 @@ export class FunasrModelDownloader {
   }
 
   async download(id: FunasrModelId, source?: string): Promise<boolean> {
+    if (usesModelHub()) return downloadHubModel('funasr', id, this.mainWindow);
     if (isFunasrModelInstalled(id)) return true;
     const spec = FUNASR_MODELS[id];
     const destDir = getFunasrModelDir(id);

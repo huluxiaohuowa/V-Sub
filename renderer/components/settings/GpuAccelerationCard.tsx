@@ -57,6 +57,8 @@ const GpuAccelerationCard: React.FC<GpuAccelerationCardProps> = ({
 }) => {
   const { t } = useTranslation('settings');
   const embedded = variant === 'embedded';
+  const vos = process.env.NEXT_PUBLIC_VSUB_WEB === '1';
+  const [vosRuntime, setVosRuntime] = useState<{profile: string; sherpaProvider: string; sherpaVersion: string} | null>(null);
 
   const [gpuEnv, setGpuEnv] = useState<GpuEnvironment | null>(null);
   const [activeBackend, setActiveBackend] =
@@ -114,6 +116,7 @@ const GpuAccelerationCard: React.FC<GpuAccelerationCardProps> = ({
         forceRefresh,
       );
       setGpuEnv(env);
+      if (process.env.NEXT_PUBLIC_VSUB_WEB === '1') setVosRuntime(await window?.ipc?.invoke('vos:runtime-status'));
 
       const active = await window?.ipc?.invoke('get-active-backend');
       setActiveBackend(active);
@@ -469,6 +472,12 @@ const GpuAccelerationCard: React.FC<GpuAccelerationCardProps> = ({
   // 各子区块抽为元素变量：standalone 与 embedded 仅「排布」不同（embedded 全部收进单个折叠区），
   // 共享同一组 props，避免两套布局重复书写导致漂移。
   const heroEl = (
+    <div className="space-y-3">
+      {vos && vosRuntime && <div className="rounded-lg border p-4 text-sm space-y-2">
+        <div className="font-semibold">{t('gpuAcceleration.vosSherpaTitle')}</div>
+        <div>{t(vosRuntime.sherpaProvider === 'cuda' ? 'gpuAcceleration.vosSherpaCuda' : 'gpuAcceleration.vosSherpaCpu', { profile: vosRuntime.profile, version: vosRuntime.sherpaVersion })}</div>
+        <p className="text-xs text-muted-foreground">{t('gpuAcceleration.vosSherpaScope')}</p>
+      </div>}
     <GpuStatusHero
       gpuEnv={gpuEnv}
       activeBackend={resolveActiveBackendForPlatform(activeBackend, gpuEnv)}
@@ -482,6 +491,7 @@ const GpuAccelerationCard: React.FC<GpuAccelerationCardProps> = ({
       onOpenDownloadSheet={() => openDownloadSheet()}
       onManageInstalled={() => setMoreOpen(true)}
     />
+    </div>
   );
 
   const progressEl = (
