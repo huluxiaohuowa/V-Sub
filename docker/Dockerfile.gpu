@@ -17,7 +17,7 @@ assert sherpa_onnx.__version__.startswith('1.13.8+cuda'), sherpa_onnx.__version_
 profile = os.environ.get('PROFILE')
 expected = {'l4t': ('cuda12', 'onnxruntime1.18.1'), 'amd-cuda': ('cuda12', 'onnxruntime1.28.2'), 'arm-cuda': ('cuda13', 'onnxruntime1.27.0'), 'thor': ('cuda13', 'onnxruntime1.27.0')}[profile]
 assert all(value in sherpa_onnx.__version__ for value in expected), sherpa_onnx.__version__
-source = pathlib.Path(sysconfig.get_paths()['purelib']) / 'sherpa_onnx/lib'
+source = pathlib.Path(sherpa_onnx.__file__).parent / 'lib'
 target = pathlib.Path('/build/install/lib')
 target.mkdir(parents=True)
 for file in source.glob('lib*.so*'):
