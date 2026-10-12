@@ -93,7 +93,13 @@
   document.addEventListener('drop', async event => {
     if (!event.dataTransfer?.files.length || Array.from(event.dataTransfer.files).every(file => paths.has(file))) return;
     event.preventDefault(); event.stopImmediatePropagation();
-    try { await ready; await Promise.all(Array.from(event.dataTransfer.files).map(upload)); event.target.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: event.dataTransfer })); }
+    const files = Array.from(event.dataTransfer.files), target = event.target, transfer = new DataTransfer();
+    for (const file of files) transfer.items.add(file);
+    try {
+      await ready; await Promise.all(files.map(upload));
+      Array.from(transfer.files).forEach((file, index) => paths.set(file, paths.get(files[index])));
+      target.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: transfer }));
+    }
     catch (error) { dispatch('vos:error', error.message); }
   }, true);
 })();
