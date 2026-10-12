@@ -1,4 +1,5 @@
 import { ipcMain } from '../automation/handlers';
+import { broadcast } from '../automation/events';
 import path from 'path';
 import {
   app,
@@ -85,11 +86,7 @@ export function setupAssistantHandlers(service: AutomationService) {
       if (!sender.isDestroyed()) sender.send('assistant:event', event);
   };
   const changed = (operation: string) => {
-    for (const window of BrowserWindow.getAllWindows())
-      window.webContents.send('assistant:event', {
-        type: 'changed',
-        operation,
-      });
+    broadcast('assistant:event', { type: 'changed', operation });
   };
   // Manual saves and imported configuration must refresh an already open panel too.
   const stopWatchingProviders = store.onDidChange('translationProviders', () =>
@@ -249,7 +246,7 @@ export function setupAssistantHandlers(service: AutomationService) {
       .optional()
       .parse(args?.paths);
     if (!paths) {
-      const owner = BrowserWindow.fromWebContents(sender);
+      const owner = process.env.VSUB_WEB ? undefined : BrowserWindow.fromWebContents(sender);
       const options = {
         filters: [
           {
