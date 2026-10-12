@@ -100,7 +100,7 @@ export async function synthesizeWithOpenAiCompatible(
       voice: request.voice,
       speed: clampOpenAiSpeed(request.speed),
       response_format: 'wav',
-      ...(request.language ? { language: request.language } : {}),
+      ...(request.language && provider.vosManaged && model.startsWith('v-voice/') ? { language: request.language } : {}),
     }),
     signal: AbortSignal.any(signals),
   });

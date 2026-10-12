@@ -2,7 +2,7 @@
 module.exports = {
   i18n: {
     defaultLocale: 'zh',
-    locales: ['zh', 'zh-TW', 'en'],
+    locales: process.env.VSUB_WEB ? ['zh', 'zh-TW', 'en'] : ['zh', 'en'],
   },
   reloadOnPrerender: process.env.NODE_ENV === 'development',
   localePath:

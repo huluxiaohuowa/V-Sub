@@ -1867,7 +1867,7 @@ export default function TaskPage() {
 }
 
 export function getStaticPaths() {
-  const locales = ['en', 'zh', 'zh-TW'];
+  const locales = ['en', 'zh', ...(process.env.VSUB_WEB ? ['zh-TW'] : [])];
   return {
     fallback: false,
     paths: locales.flatMap((locale) =>

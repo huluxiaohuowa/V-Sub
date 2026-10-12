@@ -334,7 +334,7 @@ export const ASR_PROVIDER_TYPES: AsrProviderType[] = [
     shortName: '豆包听写',
     isBuiltin: true,
     icon: '🌋',
-    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/volcengine-color.svg`,
+    iconImg: `${(typeof process !== 'undefined' && process.env.NEXT_PUBLIC_VSUB_WEB) ? '/app/com.ictrek.v-sub' : ''}/images/providers/volcengine-color.svg`,
     // 品牌型硬单例：固定官方端点；base64 直传 → 声明保守上传上限与切片时长（详见常量注释）。
     audioLimits: {
       maxUploadBytes: VOLC_MAX_UPLOAD_BYTES,
@@ -404,7 +404,7 @@ export const ASR_PROVIDER_TYPES: AsrProviderType[] = [
     shortName: '腾讯云',
     isBuiltin: true,
     icon: '🐧',
-    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/tencentcloud-color.svg`,
+    iconImg: `${(typeof process !== 'undefined' && process.env.NEXT_PUBLIC_VSUB_WEB) ? '/app/com.ictrek.v-sub' : ''}/images/providers/tencentcloud-color.svg`,
     // 品牌型硬单例。端点固定 asr.cloud.tencent.com（签名原文绑定 Host，不开放自定义）。
     // 双上限 100MB/2h 经 24MB 字节上限间接钳制（详见常量注释）。
     audioLimits: {
@@ -481,7 +481,7 @@ export const ASR_PROVIDER_TYPES: AsrProviderType[] = [
     shortName: '阿里云',
     isBuiltin: true,
     icon: '☁️',
-    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/alibabacloud.svg`,
+    iconImg: `${(typeof process !== 'undefined' && process.env.NEXT_PUBLIC_VSUB_WEB) ? '/app/com.ictrek.v-sub' : ''}/images/providers/alibabacloud.svg`,
     // 品牌型硬单例（同豆包/腾讯）。识别语种绑定 NLS 控制台项目（appkey）而非请求参数，
     // 换语种在控制台改项目配置即可（普通话模型本身可识别中英混合，覆盖主流场景）。
     // 端点固定（识别 nls-gateway / 取号 nls-meta，模块内常量），不开放自定义。
@@ -560,7 +560,7 @@ export const ASR_PROVIDER_TYPES: AsrProviderType[] = [
     shortName: '讯飞听写',
     isBuiltin: true,
     icon: '🎤',
-    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/spark-color.svg`,
+    iconImg: `${(typeof process !== 'undefined' && process.env.NEXT_PUBLIC_VSUB_WEB) ? '/app/com.ictrek.v-sub' : ''}/images/providers/spark-color.svg`,
     // 品牌型硬单例。端点固定 office-api-ist-dx.iflyaisol.com（模块内常量），不开放自定义。
     // 异步订单制（上传→轮询），500MB/5h 经 48MB 字节上限间接钳制（详见常量注释）。
     audioLimits: {
@@ -710,7 +710,7 @@ export const ASR_PROVIDER_TYPES: AsrProviderType[] = [
     shortName: 'MiMo ASR',
     isBuiltin: true,
     icon: '🎙️',
-    iconImg: `${process.env.NEXT_PUBLIC_VSUB_WEB ? '/app/com.ictrek.v-sub' : ''}/images/providers/xiaomi-mimo.svg`,
+    iconImg: `${(typeof process !== 'undefined' && process.env.NEXT_PUBLIC_VSUB_WEB) ? '/app/com.ictrek.v-sub' : ''}/images/providers/xiaomi-mimo.svg`,
     timestampMode: 'none',
     audioLimits: {
       maxUploadBytes: XIAOMI_MIMO_MAX_UPLOAD_BYTES,
