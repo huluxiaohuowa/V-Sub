@@ -35,6 +35,9 @@ if [[ "$build" == true ]]; then
       --build-arg "NODE_IMAGE=${registry}/node:24-bookworm-slim-${arch}" \
       -f docker/Dockerfile -t "$image" .
   else
+    mkdir -p "${HOME}/dev/build/v-sub"
+    exec {sherpa_lock}>"${HOME}/dev/build/v-sub/sherpa-source.lock"
+    flock "$sherpa_lock"
     # Reuse V-Voice's published, profile-specific wheel/ORT/CUDA runtime.
     gpu_base=$(SHEET="$sheet" python3 - <<'PY'
 import os, runpy
@@ -45,16 +48,18 @@ PY
     if [[ "$arch" == amd64 ]]; then cpu_prefix=amd; else cpu_prefix=arm; fi
     workbench="${WORKBENCH_IMAGE:-${registry}/v-sub:${cpu_prefix}_${date_tag}}"
     source="${SHERPA_SOURCE_DIR:-${HOME}/dev/build/v-sub/sherpa-onnx-1.13.8}"
-    if [[ ! -f "$source/scripts/node-addon-api/src/audio-tagging.cc" ]]; then
+    if [[ ! -f "$source/scripts/node-addon-api/src/audio-tagging.cc" || ( -z "${SHERPA_SOURCE_DIR:-}" && ! -f "$source/.v-sub-complete" ) ]]; then
       [[ -z "${SHERPA_SOURCE_DIR:-}" ]] || { echo "Incomplete pinned sherpa-onnx source: $source" >&2; exit 1; }
       mkdir -p "$source"
-      archive="${HOME}/dev/build/v-sub/sherpa-onnx-1.13.8.tar.gz"
+      archive=$(mktemp "${HOME}/dev/build/v-sub/sherpa-onnx-1.13.8.XXXXXX.tar.gz")
       downloaded=false
       for proxy in https://ghfast.top/ https://gh-proxy.com/ ''; do
         if curl -fsSL --connect-timeout 10 --max-time 600 --retry 1 "${proxy}https://github.com/k2-fsa/sherpa-onnx/archive/refs/tags/v1.13.8.tar.gz" -o "$archive" && tar -tzf "$archive" >/dev/null; then downloaded=true; break; fi
       done
       [[ "$downloaded" == true ]] || { echo "Cannot fetch pinned sherpa-onnx source archive" >&2; exit 1; }
       tar -xzf "$archive" --strip-components=1 -C "$source"
+      touch "$source/.v-sub-complete"
+      rm -f "$archive"
     fi
     context="${HOME}/dev/build/v-sub/sherpa-source"
     mkdir -p "$context/scripts" "$context/sherpa-onnx"
@@ -63,6 +68,7 @@ PY
       --build-context "sherpa_source=${context}" \
       --build-arg "WORKBENCH_IMAGE=$workbench" --build-arg "GPU_BASE_IMAGE=$gpu_base" --build-arg "PROFILE=$profile" \
       -f docker/Dockerfile.gpu -t "$image" .
+    flock -u "$sherpa_lock"
   fi
 fi
 if [[ "$publish" == true ]]; then
