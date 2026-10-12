@@ -22,8 +22,10 @@ target = pathlib.Path('/build/install/lib')
 target.mkdir(parents=True)
 for file in source.glob('lib*.so*'):
     if file.is_file(): shutil.copy2(file, target/file.name, follow_symlinks=True)
-ort = next(target.glob('libonnxruntime.so.*.*.*'))
+ort = next(iter(target.glob('libonnxruntime.so.*.*.*')), target/'libonnxruntime.so')
+assert ort.is_file(), 'GPU wheel is missing its ONNX Runtime library'
 for name in ['libonnxruntime.so', 'libonnxruntime.so.1']:
+    if name == ort.name: continue
     (target/name).unlink(missing_ok=True)
     (target/name).symlink_to(ort.name)
 print('Using verified GPU wheel', sherpa_onnx.__version__)
