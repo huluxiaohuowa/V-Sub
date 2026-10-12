@@ -40,8 +40,9 @@ COPY --from=web /opt/v-sub/ ./
 RUN node -e "require('fs').rmSync('extraResources/sherpa/native/linux-'+process.arch, {recursive:true,force:true})"
 COPY --from=native /build/install/lib/ /tmp/gpu-native/
 COPY --from=native /build/node-addon/build/sherpa-onnx.node /tmp/gpu-native/sherpa-onnx.node
-RUN node -e "require('fs').cpSync('/tmp/gpu-native', 'extraResources/sherpa/native/linux-'+process.arch, {recursive:true}); require('fs').rmSync('/tmp/gpu-native', {recursive:true})" \
- && python3 -c "import sherpa_onnx; assert '+cuda' in sherpa_onnx.__version__"
+RUN node -e "require('fs').cpSync('/tmp/gpu-native', 'extraResources/sherpa/native/linux-'+process.arch, {recursive:true,verbatimSymlinks:true}); require('fs').rmSync('/tmp/gpu-native', {recursive:true})" \
+ && python3 -c "import sherpa_onnx; assert '+cuda' in sherpa_onnx.__version__" \
+ && node -e "const n=require('./extraResources/sherpa/native/linux-'+process.arch+'/sherpa-onnx.node'); const expected={l4t:'1.18.1','amd-cuda':'1.28.2','arm-cuda':'1.27.0',thor:'1.27.0'}[process.env.PROFILE]; if(n.version!=='1.13.8'||n.onnxruntimeVersion!==expected) throw new Error('GPU Node binding version mismatch'); console.log('Verified Node GPU binding:',n.version,n.onnxruntimeVersion)"
 ENV NODE_ENV=production PORT=7090 VSUB_APP_ROOT=/opt/v-sub VSUB_DATA_DIR=/data \
     VSUB_SHERPA_PROVIDER=cuda VSUB_SHERPA_VERSION=1.13.8 VSUB_PROFILE=${PROFILE}
 EXPOSE 7090
