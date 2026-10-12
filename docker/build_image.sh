@@ -64,7 +64,7 @@ PY
     context="${HOME}/dev/build/v-sub/sherpa-source"
     mkdir -p "$context/scripts" "$context/sherpa-onnx"
     tar --dereference --exclude=node_modules --exclude=build -C "$source" -cf - scripts/node-addon-api sherpa-onnx/c-api | tar -C "$context" -xf -
-    docker buildx build --builder default --load --provenance=false --sbom=false \
+    docker buildx build --builder default --pull --load --provenance=false --sbom=false \
       --build-context "sherpa_source=${context}" \
       --build-arg "WORKBENCH_IMAGE=$workbench" --build-arg "GPU_BASE_IMAGE=$gpu_base" --build-arg "PROFILE=$profile" \
       -f docker/Dockerfile.gpu -t "$image" .
