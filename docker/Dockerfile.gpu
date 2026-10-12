@@ -30,6 +30,7 @@ for name in ['libonnxruntime.so', 'libonnxruntime.so.1']:
     (target/name).symlink_to(ort.name)
 print('Using verified GPU wheel', sherpa_onnx.__version__)
 PY
+RUN if ! command -v make >/dev/null; then apt-get update && apt-get install -y --no-install-recommends make && rm -rf /var/lib/apt/lists/*; fi
 RUN cmake -S node-addon -B node-addon/build -DCMAKE_JS_INC=/usr/local/include/node -DCMAKE_BUILD_TYPE=Release \
  && cmake --build node-addon/build -j 4
 
