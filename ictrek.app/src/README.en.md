@@ -15,3 +15,5 @@ Choose Follow VOS, Simplified Chinese, Traditional Chinese or English without re
 Install Model Hub first and use its shared directory for `MODEL_HUB_SHARED_MODELS_PATH`. Model Hub downloads compatible weights from ModelScope, including missing packages mirrored under vivibit. Weights are mounted read-only. Removing a model here detaches the current account; global disk cleanup belongs to Model Hub. Personal voices and tasks remain isolated. Existing files remain usable; downloading again switches to shared weights and retains a legacy backup.
 
 The GPU panel separates bundled sherpa-onnx runtimes from optional whisper.cpp plugins. Missing nvcc does not imply missing CUDA runtime libraries or a required host-driver upgrade.
+
+Model Hub permission fix: V-Sub mounts only `<MODEL_HUB_SHARED_MODELS_PATH>/export` read-only, rather than the restricted storage root. A completed model with inaccessible or missing files is reported as a mount/permission error and never triggers a full forced re-download. Existing downloaded weights are reused after updating the package.

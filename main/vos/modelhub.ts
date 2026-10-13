@@ -6,6 +6,7 @@ import catalog from '../../catalog/modelhub.json';
 type Model = typeof catalog[number];
 const hubUrl = process.env.MODEL_HUB_API_URL || 'http://model-hub-backend:5005';
 const hubRoot = process.env.MODEL_HUB_SHARED_MODELS_PATH || '/modelhub';
+const exportRoot = process.env.MODEL_HUB_EXPORTS_PATH || path.join(hubRoot, 'export');
 let lastSync = 0;
 let active: { group: string; controller: AbortController; task?: string } | undefined;
 let syncFlight: Promise<void> | undefined;
@@ -24,10 +25,10 @@ function find(group: string, id: string): Model {
   if (!model) throw new Error(`Unknown Model Hub model: ${group}:${id}`);
   return model;
 }
-function source(m: Model) { return path.join(hubRoot, 'export', 'ms', m.repo, 'current'); }
+function source(m: Model) { return path.join(exportRoot, 'ms', m.repo, 'current'); }
 function mapping(m: Model): Record<string, string> { return 'mapping' in m && m.mapping ? m.mapping as Record<string, string> : {}; }
 export function hubFilesReady(m: Model): boolean {
-  return m.required.every(file => { try { const stat = fs.statSync(path.join(source(m), mapping(m)[file] || file)); return stat.isFile() && stat.size > 0 && (!('sizes' in m) || !m.sizes || !(m.sizes as Record<string, number>)[file] || stat.size === (m.sizes as Record<string, number>)[file]); } catch { return false; } });
+  return m.required.every(file => { try { const stat = fs.statSync(path.join(source(m), mapping(m)[file] || file)); return stat.isFile() && stat.size > 0 && (!('sizes' in m) || !m.sizes || !(m.sizes as Record<string, number>)[file] || stat.size === (m.sizes as Record<string, number>)[file]); } catch (error: any) { if (error.code === 'EACCES' || error.code === 'EPERM') throw new Error('Model Hub weights are not readable by the isolated user. Update V-Sub to use the read-only export mount; downloading again will not fix permissions.'); return false; } });
 }
 function destination(m: Model): string {
   switch (m.group) {
@@ -107,12 +108,15 @@ export async function downloadHubModel(group: string, id: string, window: Browse
       const rows = await request('/models?status=all');
       const ready = rows.some((r: any) => repoId(r.model_id) === m.repo && r.status === 'ready');
       let files = 'files' in m ? m.files as string[] : undefined;
+      if (ready && !files) throw new Error('Model Hub has completed this model, but its files are unavailable in the shared export mount. Check the mount; the model will not be downloaded again.');
       if (files && ready) {
+        try { fs.readdirSync(source(m)); } catch { throw new Error('Model Hub has completed this model, but its export directory is unavailable. Check the mount; the model will not be downloaded again.'); }
         // Keep already published views when adding a selective subset to a repo.
         for (const sibling of catalog.filter(s => s.repo === m.repo && hubFilesReady(s))) if ('files' in sibling) files = [...new Set([...files, ...sibling.files as string[]])];
       }
       const response = await fetch(`${hubUrl}/api/v1/models/pull`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: 'ms', model_id: m.repo, name: `V-Sub · ${m.id}`, files, force: ready }), signal: AbortSignal.timeout(15000) });
       let taskId: string;
+      const joined = response.status === 409;
       if (response.status === 409) {
         const tasks = await request('/tasks');
         const task = tasks.find((t: any) => repoId(t.model_id) === m.repo && ['PENDING', 'DOWNLOADING', 'VERIFYING'].includes(t.phase));
@@ -141,6 +145,9 @@ export async function downloadHubModel(group: string, id: string, window: Browse
       }
       if (Date.now() >= deadline) throw new Error('Model Hub download timed out');
       run.task = undefined;
+      // Only a joined selective pull may have completed a different subset.
+      // A completed full pull must never trigger another forced download.
+      if (!hubFilesReady(m) && (!joined || !files)) throw new Error('Model Hub completed the download, but the model is unavailable in the shared export mount. The model will not be downloaded again.');
     }
     throw new Error('Model Hub model files are incomplete or shared mount is unavailable');
   } catch (error) { notify(0, 'error', { error_msg: String(error) }); throw error; }

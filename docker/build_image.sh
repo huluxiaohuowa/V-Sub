@@ -32,9 +32,10 @@ if [[ "$build" == true ]]; then
   if [[ "$app_only" == true ]]; then
     if [[ "$arch" == amd64 ]]; then cpu_prefix=amd; else cpu_prefix=arm; fi
     workbench="${WORKBENCH_IMAGE:-${registry}/v-sub:${cpu_prefix}_${date_tag}}"
-    docker image inspect "$image" >/dev/null
+    base_image="${BASE_IMAGE:-$image}"
+    docker image inspect "$base_image" >/dev/null
     docker buildx build --builder default --load --provenance=false --sbom=false \
-      --build-arg "BASE_IMAGE=$image" --build-arg "WORKBENCH_IMAGE=$workbench" --build-arg "PROFILE=$profile" \
+      --build-arg "BASE_IMAGE=$base_image" --build-arg "WORKBENCH_IMAGE=$workbench" --build-arg "PROFILE=$profile" \
       -f docker/Dockerfile.app -t "$image" .
   elif [[ "$gateway_only" == true ]]; then
     docker image inspect "$image" >/dev/null

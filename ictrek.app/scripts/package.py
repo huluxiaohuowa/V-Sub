@@ -146,6 +146,8 @@ def package(version: str, stage: Path) -> Path:
             raise RuntimeError(f"invalid image reference: {image}")
     if 'external: true' not in compose or 'aliases:' not in compose or 'vos_default:' not in compose:
         raise RuntimeError("missing VOS network or aliases")
+    if '/export:/modelhub:ro' not in compose or 'MODEL_HUB_EXPORTS_PATH: /modelhub' not in compose:
+        raise RuntimeError('Model Hub must mount only public exports read-only')
     routers = (stage / "routers.yml").read_text()
     for field in ['id: v-sub', 'kind: page', '/app/com.ictrek.v-sub/', 'entry-point: true', 'embed: true']:
         if field not in routers:

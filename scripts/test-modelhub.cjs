@@ -8,6 +8,7 @@ const Module = require('node:module');
 const ts = require('typescript');
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'vsub-modelhub-'));
 let userRoot = path.join(root, 'user-a');
+let materialize = true;
 let rows = [], taskPhase = 'READY', pulls = [], cancellations = 0, conflict = false;
 const fixtureRepo = 'vivibit/v-sub-whisper-tiny';
 const shared = path.join(root, 'hub/export/ms', fixtureRepo, 'current');
@@ -26,7 +27,7 @@ const server = http.createServer(async (req, res) => {
     let body = ''; for await (const chunk of req) body += chunk;
     const payload = JSON.parse(body); pulls.push(payload);
     if (conflict) return json(409, { detail: 'already downloading' });
-    if (taskPhase === 'READY') writeModel();
+    if (taskPhase === 'READY' && materialize) writeModel();
     return json(200, { task_id: 'owned-task' });
   }
   if (req.url.endsWith('/cancel')) { cancellations++; return json(200, {}); }
@@ -64,6 +65,19 @@ const window = { webContents: { send() {} } };
   // Failed Model Hub tasks never fall back to independent HF downloads.
   fs.rmSync(shared, { recursive: true }); fs.unlinkSync(dest()); rows = []; taskPhase = 'FAILED';
   await assert.rejects(hub.downloadHubModel('ggml', 'tiny', window), /fixture failure/);
+  taskPhase = 'READY'; materialize = false;
+  const beforeMissing = pulls.length;
+  await assert.rejects(hub.downloadHubModel('ggml', 'tiny', window), /will not be downloaded again/);
+  assert.equal(pulls.length, beforeMissing + 1, 'completed full pull must not be forced a second time');
+  rows = [{ model_id: fixtureRepo, status: 'ready' }];
+  await assert.rejects(hub.downloadHubModel('ggml', 'tiny', window), /will not be downloaded again/);
+  assert.equal(pulls.length, beforeMissing + 1, 'READY with missing mount must not create another task');
+  const statSync = fs.statSync;
+  fs.statSync = function (file, ...args) { if (String(file).startsWith(shared)) { const error = new Error('fixture permission'); error.code = 'EACCES'; throw error; } return statSync.call(this, file, ...args); };
+  await assert.rejects(hub.downloadHubModel('ggml', 'tiny', window), /not readable/);
+  fs.statSync = statSync;
+  assert.equal(pulls.length, beforeMissing + 1, 'permission failure must not cause a download');
+  rows = [];
   taskPhase = 'DOWNLOADING'; conflict = true;
   const joined = hub.downloadHubModel('ggml', 'tiny', window);
   const rejected = assert.rejects(joined, /Download cancelled/);
